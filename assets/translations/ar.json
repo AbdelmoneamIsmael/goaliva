@@ -1,0 +1,48 @@
+{
+  "app_name": "جوليفا",
+  "common": {
+    "show_password": "إظهار كلمة المرور",
+    "hide_password": "إخفاء كلمة المرور",
+    "search_hint": "بحث",
+    "remove": "إزالة",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد"
+  },
+  "welcome": {
+    "tagline": "هدفك قدامك، وخطوتك تقرّبك.",
+    "promise": "خلّي خطوتك الجاية واضحة، والتحفيز من كلماتك أنت.",
+    "primary_action": "أساسي",
+    "secondary_action": "ثانوي",
+    "tertiary_action": "شفّاف",
+    "last_action": "آخر إجراء: {action}",
+    "no_action": "اضغط على زر لتجربة كل نمط.",
+    "toggle_language": "التبديل إلى الإنجليزية",
+    "toggle_theme_light": "التبديل إلى الوضع الفاتح",
+    "toggle_theme_dark": "التبديل إلى الوضع الداكن",
+    "open_showcase": "تصفح أمثلة المكونات"
+  },
+  "showcase": {
+    "title": "أمثلة المكونات",
+    "section_inputs": "الحقول",
+    "section_selection": "الاختيار",
+    "section_actions": "الإجراءات",
+    "section_layout": "التخطيط",
+    "task_title": "عنوان المهمة",
+    "task_hint": "ادرس Flutter لمدة 30 دقيقة",
+    "task_helper": "خلّها واضحة وقابلة للتنفيذ اليوم.",
+    "search_hint": "ابحث في الرسائل أو المهام",
+    "dropdown_hint": "اختر مجموعة",
+    "toggle_tasks": "المهام",
+    "toggle_motivation": "التحفيز",
+    "filter_habits": "عادات يومية",
+    "open_dialog": "حوار التأكيد",
+    "dialog_title": "حذف هذه المهمة؟",
+    "dialog_message": "لا يمكن التراجع عن هذا الإجراء.",
+    "link_leading": "تحتاج تذكير؟ ",
+    "link_action": "أنشئ واحدًا",
+    "glass_sample": "حاوية زجاجية للأسطح المرتفعة.",
+    "empty_title": "لا توجد مهام بعد",
+    "empty_description": "أنشئ أول مهمة عشان تبدأ زخمك.",
+    "empty_action": "إضافة مهمة"
+  }
+}

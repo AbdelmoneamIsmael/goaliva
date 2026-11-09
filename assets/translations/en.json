@@ -1,0 +1,48 @@
+{
+  "app_name": "Goaliva",
+  "common": {
+    "show_password": "Show password",
+    "hide_password": "Hide password",
+    "search_hint": "Search",
+    "remove": "Remove",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "welcome": {
+    "tagline": "Your Goals. Your Momentum.",
+    "promise": "Keep your next step clear and your motivation personal.",
+    "primary_action": "Primary",
+    "secondary_action": "Secondary",
+    "tertiary_action": "Tertiary",
+    "last_action": "Last action: {action}",
+    "no_action": "Tap a button to try each style.",
+    "toggle_language": "Switch to Arabic",
+    "toggle_theme_light": "Switch to light",
+    "toggle_theme_dark": "Switch to dark",
+    "open_showcase": "Browse widget samples"
+  },
+  "showcase": {
+    "title": "Widget samples",
+    "section_inputs": "Inputs",
+    "section_selection": "Selection",
+    "section_actions": "Actions",
+    "section_layout": "Layout",
+    "task_title": "Task title",
+    "task_hint": "Study Flutter for 30 minutes",
+    "task_helper": "Keep it specific and doable today.",
+    "search_hint": "Search messages or tasks",
+    "dropdown_hint": "Choose a collection",
+    "toggle_tasks": "Tasks",
+    "toggle_motivation": "Motivation",
+    "filter_habits": "Daily habits",
+    "open_dialog": "Confirm dialog",
+    "dialog_title": "Delete this task?",
+    "dialog_message": "This action cannot be undone.",
+    "link_leading": "Need a reminder? ",
+    "link_action": "Create one",
+    "glass_sample": "Glass container for elevated surfaces.",
+    "empty_title": "No tasks yet",
+    "empty_description": "Create your first task to start building momentum.",
+    "empty_action": "Add task"
+  }
+}

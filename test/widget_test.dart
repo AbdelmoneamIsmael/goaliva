@@ -1,30 +1,68 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:goaliva/main.dart';
+import 'package:goaliva/core/theme/app_theme.dart';
+import 'package:goaliva/core/theme/theme_cubit.dart';
+import 'package:goaliva/feat/welcome/presentation/cubit/welcome_cubit.dart';
+import 'package:goaliva/feat/welcome/presentation/pages/welcome_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  TestWidgetsFlutterBinding.ensureInitialized();
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  late SharedPreferences prefs;
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+  setUpAll(() async {
+    SharedPreferences.setMockInitialValues({});
+    await EasyLocalization.ensureInitialized();
+    prefs = await SharedPreferences.getInstance();
+  });
+
+  testWidgets('welcome screen shows title and records primary tap', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      EasyLocalization(
+        supportedLocales: const [Locale('en'), Locale('ar')],
+        path: 'assets/translations',
+        fallbackLocale: const Locale('en'),
+        startLocale: const Locale('en'),
+        child: ScreenUtilInit(
+          designSize: const Size(390, 844),
+          minTextAdapt: true,
+          builder: (context, child) {
+            final locale = context.locale;
+            return BlocProvider(
+              create: (_) => ThemeCubit(prefs),
+              child: MaterialApp(
+                theme: AppTheme.light(locale),
+                darkTheme: AppTheme.dark(locale),
+                locale: locale,
+                supportedLocales: context.supportedLocales,
+                localizationsDelegates: context.localizationDelegates,
+                home: BlocProvider(
+                  create: (_) => WelcomeCubit(),
+                  child: const WelcomePage(),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    expect(find.text('Goaliva'), findsOneWidget);
+    expect(find.text('Your Goals. Your Momentum.'), findsOneWidget);
+    expect(find.text('Switch to Arabic'), findsOneWidget);
+
+    await tester.tap(find.text('Primary'));
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.text('Last action: Primary'), findsOneWidget);
+    expect(find.text('Browse widget samples'), findsOneWidget);
   });
 }
