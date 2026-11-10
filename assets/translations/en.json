@@ -75,7 +75,34 @@
       "focus_2": "Clear the noise. Protect the next deep block."
     }
   },
-  "placeholders": {
-    "settings_title": "Settings"
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Tune reminders, look, and language to fit your day.",
+    "profile_initial": "A",
+    "profile_name": "Alex",
+    "profile_subtitle": "Keep building momentum",
+    "profile_coming_soon": "Profile editing is coming later.",
+    "section_notifications": "Notifications",
+    "section_preferences": "Preferences",
+    "section_about": "About",
+    "notif_reminders": "Reminders",
+    "notif_reminders_sub": "Alarms and calendar events",
+    "notif_spark": "Daily motivation spark",
+    "notif_spark_sub": "A short push each morning",
+    "notif_goals": "Goal check-ins",
+    "notif_goals_sub": "Nudge when a goal needs attention",
+    "appearance": "Appearance",
+    "theme_light": "Light",
+    "theme_dark": "Dark",
+    "theme_system": "System",
+    "language": "Language",
+    "language_en": "English",
+    "language_ar": "Arabic",
+    "sound": "Reminder sounds",
+    "sound_sub": "Play sound with reminders",
+    "about": "About Goaliva",
+    "about_sub": "Version and app info",
+    "about_body": "Goaliva helps you stay with alarms, events, tasks, goals, and motivation.",
+    "about_version": "Version {version}"
   }
 }

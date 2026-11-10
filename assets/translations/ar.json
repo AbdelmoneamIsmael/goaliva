@@ -75,7 +75,34 @@
       "focus_2": "صفّي الضوضاء. احمِ كتلة التركيز الجاية."
     }
   },
-  "placeholders": {
-    "settings_title": "الإعدادات"
+  "settings": {
+    "title": "الإعدادات",
+    "subtitle": "اضبط التذكيرات والمظهر واللغة حسب يومك.",
+    "profile_initial": "أ",
+    "profile_name": "أليكس",
+    "profile_subtitle": "كمّل بناء الزخم",
+    "profile_coming_soon": "تعديل الملف الشخصي هيجي لاحقًا.",
+    "section_notifications": "الإشعارات",
+    "section_preferences": "التفضيلات",
+    "section_about": "حول التطبيق",
+    "notif_reminders": "التذكيرات",
+    "notif_reminders_sub": "المنبّهات ومناسبات التقويم",
+    "notif_spark": "شرارة التحفيز اليومية",
+    "notif_spark_sub": "دفعة قصيرة كل صباح",
+    "notif_goals": "متابعة الأهداف",
+    "notif_goals_sub": "تنبيه لما هدف يحتاج انتباه",
+    "appearance": "المظهر",
+    "theme_light": "فاتح",
+    "theme_dark": "داكن",
+    "theme_system": "حسب النظام",
+    "language": "اللغة",
+    "language_en": "الإنجليزية",
+    "language_ar": "العربية",
+    "sound": "أصوات التذكير",
+    "sound_sub": "تشغيل صوت مع التذكيرات",
+    "about": "حول جوليفا",
+    "about_sub": "الإصدار ومعلومات التطبيق",
+    "about_body": "جوليفا تساعدك تلتزم بالمنبّهات والمناسبات والمهام والأهداف والتحفيز.",
+    "about_version": "الإصدار {version}"
   }
 }

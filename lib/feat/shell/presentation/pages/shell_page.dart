@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../calendar/presentation/pages/calendar_page.dart';
 import '../../../home/presentation/pages/home_page.dart';
 import '../../../motivation/presentation/pages/motivation_page.dart';
-import '../../../settings/presentation/pages/settings_placeholder_page.dart';
+import '../../../settings/presentation/pages/settings_page.dart';
 import '../widgets/app_bottom_nav_bar.dart';
 
 class ShellPage extends StatefulWidget {
@@ -22,7 +22,7 @@ class _ShellPageState extends State<ShellPage> {
     HomePage(),
     CalendarPage(),
     MotivationPage(),
-    SettingsPlaceholderPage(),
+    SettingsPage(),
   ];
 
   @override
