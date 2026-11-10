@@ -19,15 +19,14 @@ class HomePage extends StatelessWidget {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
         return Scaffold(
+          backgroundColor: theme.scaffoldBackgroundColor,
           body: SafeArea(
             bottom: false,
             child: ListView(
               padding: EdgeInsetsDirectional.fromSTEB(20.w, 12.h, 20.w, 28.h),
               children: [
-                const _HomeTopBar(),
-                SizedBox(height: 24.h),
-                _WelcomeHeader(isArabic: isArabic),
-                SizedBox(height: 20.h),
+                _HeroHeader(isArabic: isArabic, isDark: isDark),
+                SizedBox(height: 22.h),
                 AppWeekCalendar(
                   title: 'home.momentum_title'.tr(),
                   statusText: 'home.momentum_status'.tr(),
@@ -41,9 +40,9 @@ class HomePage extends StatelessWidget {
                     context.read<HomeCubit>().changeWeek(focused);
                   },
                 ),
-                SizedBox(height: 20.h),
+                SizedBox(height: 22.h),
                 _QuickGrid(isDark: isDark),
-                SizedBox(height: 20.h),
+                SizedBox(height: 22.h),
                 _TodayMotivationCard(isDark: isDark),
               ],
             ),
@@ -54,166 +53,230 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class _HomeTopBar extends StatelessWidget {
-  const _HomeTopBar();
+/// Gradient hero card combining brand bar, greeting, and streak.
+class _HeroHeader extends StatelessWidget {
+  const _HeroHeader({required this.isArabic, required this.isDark});
+
+  final bool isArabic;
+  final bool isDark;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
-    final success = isDark ? AppColors.darkSuccess : AppColors.lightSuccess;
+    final secondary = isDark ? AppColors.darkSecondary : AppColors.lightSecondary;
 
-    return Row(
-      children: [
-        Container(
-          width: 40.w,
-          height: 40.w,
-          decoration: BoxDecoration(
-            color: colorScheme.primary.withValues(alpha: isDark ? 0.22 : 0.12),
-            borderRadius: BorderRadius.circular(12.r),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(28.r),
+      child: Container(
+        padding: EdgeInsets.fromLTRB(18.w, 18.h, 18.w, 20.h),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: AlignmentDirectional.topStart,
+            end: AlignmentDirectional.bottomEnd,
+            colors: [colorScheme.primary, secondary],
           ),
-          child: Icon(
-            Icons.gps_fixed_rounded,
-            color: colorScheme.primary,
-            size: 22.sp,
-          ),
-        ),
-        SizedBox(width: 10.w),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'app_name'.tr(),
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              Text(
-                'home.brand_subtitle'.tr(),
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: colorScheme.onSurfaceVariant,
-                ),
-              ),
-            ],
-          ),
-        ),
-        Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Icon(
-              Icons.notifications_none_rounded,
-              size: 26.sp,
-              color: colorScheme.onSurfaceVariant,
-            ),
-            PositionedDirectional(
-              top: 0,
-              end: 1,
-              child: Container(
-                width: 8.w,
-                height: 8.w,
-                decoration: BoxDecoration(
-                  color: success,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: theme.scaffoldBackgroundColor,
-                    width: 1.5,
-                  ),
-                ),
-              ),
+          boxShadow: [
+            BoxShadow(
+              color: colorScheme.primary.withValues(alpha: isDark ? 0.35 : 0.28),
+              blurRadius: 28,
+              offset: Offset(0, 14.h),
             ),
           ],
         ),
-        SizedBox(width: 12.w),
-        CircleAvatar(
-          radius: 18.r,
-          backgroundColor:
-              colorScheme.primary.withValues(alpha: isDark ? 0.28 : 0.16),
-          child: Text(
-            'A',
-            style: theme.textTheme.titleSmall?.copyWith(
-              color: colorScheme.primary,
-              fontWeight: FontWeight.w700,
+        child: Stack(
+          children: [
+            PositionedDirectional(
+              top: -30.h,
+              end: -20.w,
+              child: _GlowCircle(size: 140.w),
             ),
-          ),
+            PositionedDirectional(
+              bottom: -40.h,
+              start: -30.w,
+              child: _GlowCircle(size: 120.w),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    _GlassBadge(
+                      size: 38.w,
+                      child: Icon(
+                        Icons.gps_fixed_rounded,
+                        color: Colors.white,
+                        size: 20.sp,
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'app_name'.tr(),
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          Text(
+                            'home.brand_subtitle'.tr(),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: Colors.white.withValues(alpha: 0.75),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        _GlassBadge(
+                          size: 38.w,
+                          child: Icon(
+                            Icons.notifications_none_rounded,
+                            color: Colors.white,
+                            size: 20.sp,
+                          ),
+                        ),
+                        PositionedDirectional(
+                          top: -1,
+                          end: -1,
+                          child: Container(
+                            width: 9.w,
+                            height: 9.w,
+                            decoration: BoxDecoration(
+                              color: isDark
+                                  ? AppColors.darkSuccess
+                                  : AppColors.lightSuccess,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.white, width: 1.5),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(width: 10.w),
+                    Container(
+                      width: 38.w,
+                      height: 38.w,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white.withValues(alpha: 0.18),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.5),
+                          width: 1.5,
+                        ),
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        'A',
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20.h),
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(text: 'home.greeting'.tr()),
+                      TextSpan(text: ' ${'home.greeting_wave'.tr()}'),
+                    ],
+                  ),
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: isArabic ? 0 : -0.3,
+                    height: 1.2,
+                  ),
+                ),
+                SizedBox(height: 6.h),
+                Text(
+                  'home.motto'.tr(),
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    color: Colors.white.withValues(alpha: 0.85),
+                    height: 1.4,
+                  ),
+                ),
+                SizedBox(height: 14.h),
+                Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.16),
+                      borderRadius: BorderRadius.circular(999.r),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.3),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('🔥', style: TextStyle(fontSize: 13.sp)),
+                        SizedBox(width: 6.w),
+                        Text(
+                          'home.streak'.tr(),
+                          style: theme.textTheme.labelMedium?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
 
-class _WelcomeHeader extends StatelessWidget {
-  const _WelcomeHeader({required this.isArabic});
+class _GlassBadge extends StatelessWidget {
+  const _GlassBadge({required this.size, required this.child});
 
-  final bool isArabic;
+  final double size;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
-    final success = isDark ? AppColors.darkSuccess : AppColors.lightSuccess;
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.16),
+        borderRadius: BorderRadius.circular(size * 0.32),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.28)),
+      ),
+      alignment: Alignment.center,
+      child: child,
+    );
+  }
+}
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Text.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(text: 'home.greeting'.tr()),
-                    TextSpan(text: ' ${'home.greeting_wave'.tr()}'),
-                  ],
-                ),
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: isArabic ? 0 : -0.3,
-                  height: 1.2,
-                ),
-              ),
-            ),
-            SizedBox(width: 8.w),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 7.h),
-              decoration: BoxDecoration(
-                color: isDark
-                    ? AppColors.darkSurfaceElevated
-                    : AppColors.lightSurfaceRecessed,
-                borderRadius: BorderRadius.circular(999.r),
-                border: Border.all(
-                  color: isDark ? AppColors.darkStroke : AppColors.lightStroke,
-                ),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('🔥', style: TextStyle(fontSize: 12.sp)),
-                  SizedBox(width: 4.w),
-                  Text(
-                    'home.streak'.tr(),
-                    style: theme.textTheme.labelMedium?.copyWith(
-                      color: success,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 8.h),
-        Text(
-          'home.motto'.tr(),
-          style: theme.textTheme.bodyLarge?.copyWith(
-            color: colorScheme.onSurfaceVariant,
-            height: 1.4,
-          ),
-        ),
-      ],
+class _GlowCircle extends StatelessWidget {
+  const _GlowCircle({required this.size});
+
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.white.withValues(alpha: 0.08),
+      ),
     );
   }
 }
@@ -262,9 +325,9 @@ class _QuickGrid extends StatelessWidget {
       itemCount: tiles.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        mainAxisSpacing: 12.h,
-        crossAxisSpacing: 12.w,
-        childAspectRatio: 1.35,
+        mainAxisSpacing: 14.h,
+        crossAxisSpacing: 14.w,
+        childAspectRatio: 1.3,
       ),
       itemBuilder: (context, index) {
         final tile = tiles[index];
@@ -300,25 +363,39 @@ class _QuickGridTile extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      padding: EdgeInsets.all(14.w),
+      padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         color: isDark ? AppColors.darkSurface : AppColors.lightSurface,
-        borderRadius: BorderRadius.circular(18.r),
+        borderRadius: BorderRadius.circular(20.r),
         border: Border.all(
           color: isDark ? AppColors.darkStroke : AppColors.lightStroke,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: accent.withValues(alpha: isDark ? 0.18 : 0.12),
+            blurRadius: 18,
+            offset: Offset(0, 8.h),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 36.w,
-            height: 36.w,
+            width: 40.w,
+            height: 40.w,
             decoration: BoxDecoration(
-              color: accent.withValues(alpha: isDark ? 0.2 : 0.12),
-              borderRadius: BorderRadius.circular(12.r),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  accent.withValues(alpha: isDark ? 0.9 : 1),
+                  accent.withValues(alpha: isDark ? 0.55 : 0.65),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(14.r),
             ),
-            child: Icon(icon, color: accent, size: 20.sp),
+            child: Icon(icon, color: Colors.white, size: 21.sp),
           ),
           const Spacer(),
           Text(
@@ -327,7 +404,7 @@ class _QuickGridTile extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
-          SizedBox(height: 2.h),
+          SizedBox(height: 3.h),
           Text(
             subtitle,
             style: theme.textTheme.bodySmall?.copyWith(
@@ -361,48 +438,71 @@ class _TodayMotivationCard extends StatelessWidget {
           ),
         ),
         SizedBox(height: 10.h),
-        Container(
-          width: double.infinity,
-          padding: EdgeInsets.all(20.w),
-          decoration: BoxDecoration(
-            color: isDark ? AppColors.darkSurface : AppColors.lightSurface,
-            borderRadius: BorderRadius.circular(20.r),
-            border: Border.all(
-              color: isDark ? AppColors.darkStroke : AppColors.lightStroke,
+        ClipRRect(
+          borderRadius: BorderRadius.circular(22.r),
+          child: Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(20.w),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: AlignmentDirectional.topStart,
+                end: AlignmentDirectional.bottomEnd,
+                colors: [
+                  colorScheme.primary.withValues(alpha: isDark ? 0.3 : 0.16),
+                  isDark ? AppColors.darkSurface : AppColors.lightSurface,
+                ],
+              ),
+              border: Border.all(
+                color: isDark ? AppColors.darkStroke : AppColors.lightStroke,
+              ),
             ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(
-                Icons.format_quote_rounded,
-                color: colorScheme.primary,
-                size: 28.sp,
-              ),
-              SizedBox(height: 12.h),
-              Text(
-                'home.today_motivation_quote'.tr(),
-                style: theme.textTheme.titleMedium?.copyWith(
-                  height: 1.45,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              SizedBox(height: 14.h),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
-                decoration: BoxDecoration(
-                  color: colorScheme.primary
-                      .withValues(alpha: isDark ? 0.18 : 0.1),
-                  borderRadius: BorderRadius.circular(999.r),
-                ),
-                child: Text(
-                  'home.today_motivation_collection'.tr(),
-                  style: theme.textTheme.labelMedium?.copyWith(
-                    color: colorScheme.primary,
+            child: Stack(
+              children: [
+                PositionedDirectional(
+                  top: -10.h,
+                  end: -6.w,
+                  child: Icon(
+                    Icons.format_quote_rounded,
+                    color: colorScheme.primary.withValues(alpha: 0.12),
+                    size: 96.sp,
                   ),
                 ),
-              ),
-            ],
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.auto_awesome_rounded,
+                      color: colorScheme.primary,
+                      size: 26.sp,
+                    ),
+                    SizedBox(height: 12.h),
+                    Text(
+                      'home.today_motivation_quote'.tr(),
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        height: 1.45,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 14.h),
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                      decoration: BoxDecoration(
+                        color: colorScheme.primary
+                            .withValues(alpha: isDark ? 0.22 : 0.12),
+                        borderRadius: BorderRadius.circular(999.r),
+                      ),
+                      child: Text(
+                        'home.today_motivation_collection'.tr(),
+                        style: theme.textTheme.labelMedium?.copyWith(
+                          color: colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ],

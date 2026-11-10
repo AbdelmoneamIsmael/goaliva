@@ -35,27 +35,51 @@ class AppWeekCalendar extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
     final success = isDark ? AppColors.darkSuccess : AppColors.lightSuccess;
     final locale = Localizations.localeOf(context).languageCode;
+    final weekProgress = (completedDays.length / 7).clamp(0.0, 1.0);
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.all(18.w),
       decoration: BoxDecoration(
         color: isDark ? AppColors.darkSurface : AppColors.lightSurface,
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: BorderRadius.circular(24.r),
         border: Border.all(
           color: isDark ? AppColors.darkStroke : AppColors.lightStroke,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: success.withValues(alpha: isDark ? 0.12 : 0.08),
+            blurRadius: 22,
+            offset: Offset(0, 10.h),
+          ),
+        ],
       ),
       child: Column(
         children: [
           Row(
             children: [
-              Icon(
-                Icons.calendar_today_rounded,
-                size: 16.sp,
-                color: success,
+              SizedBox(
+                width: 34.w,
+                height: 34.w,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    CircularProgressIndicator(
+                      value: weekProgress,
+                      strokeWidth: 3.5,
+                      backgroundColor:
+                          isDark ? AppColors.darkStroke : AppColors.lightStroke,
+                      valueColor: AlwaysStoppedAnimation<Color>(success),
+                    ),
+                    Icon(
+                      Icons.calendar_today_rounded,
+                      size: 14.sp,
+                      color: success,
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(width: 8.w),
+              SizedBox(width: 10.w),
               Expanded(
                 child: Text(
                   title.toUpperCase(),
@@ -74,7 +98,7 @@ class AppWeekCalendar extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 12.h),
+          SizedBox(height: 14.h),
           TableCalendar<void>(
             locale: locale,
             firstDay: DateTime.utc(2020, 1, 1),
