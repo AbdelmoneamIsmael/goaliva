@@ -91,7 +91,6 @@ class AlarmFormCubit extends Cubit<AlarmFormState> {
     int? minute,
   }) {
     String? titleKey;
-    String? descriptionKey;
     String? timeKey;
 
     final trimmedTitle = title.trim();
@@ -102,20 +101,12 @@ class AlarmFormCubit extends Cubit<AlarmFormState> {
     }
 
     final trimmedDescription = description.trim();
-    if (trimmedDescription.isEmpty) {
-      descriptionKey = 'alarm.validation_description_required';
-    } else if (trimmedDescription.length > maxDescriptionLength) {
-      descriptionKey = 'alarm.validation_description_max';
-    }
+    if (trimmedDescription.isEmpty) {}
 
     if (hour == null || minute == null) {
       timeKey = 'alarm.validation_time_required';
     }
 
-    return AlarmFormFieldErrors(
-      titleKey: titleKey,
-      descriptionKey: descriptionKey,
-      timeKey: timeKey,
-    );
+    return AlarmFormFieldErrors(titleKey: titleKey, timeKey: timeKey);
   }
 }

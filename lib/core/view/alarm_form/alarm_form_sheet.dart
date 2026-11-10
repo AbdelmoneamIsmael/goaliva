@@ -162,16 +162,14 @@ class _AlarmFormSheetState extends State<AlarmFormSheet> {
                   title: 'alarm.field_description'.tr(),
                   hint: 'alarm.field_description_hint'.tr(),
                   controller: _descriptionController,
-                  isRequired: true,
+                  isRequired: false,
+
                   maxLines: 3,
                   textInputAction: TextInputAction.done,
                   helperText: 'alarm.field_description_helper'.tr(),
                   onChanged: context.read<AlarmFormCubit>().setDescription,
                 ),
-                if (errors.descriptionKey != null) ...[
-                  SizedBox(height: 6.h),
-                  _FieldErrorText(messageKey: errors.descriptionKey!),
-                ],
+
                 SizedBox(height: 16.h),
                 Text(
                   'alarm.field_time'.tr(),
