@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../models/alarm.dart';
+import '../../../../core/models/alarm/alarm.dart';
 
 part 'alarm_state.freezed.dart';
 
@@ -8,9 +8,7 @@ part 'alarm_state.freezed.dart';
 abstract class AlarmState with _$AlarmState {
   const AlarmState._();
 
-  const factory AlarmState({
-    required List<Alarm> alarms,
-  }) = _AlarmState;
+  const factory AlarmState({required List<AlarmModel> alarms}) = _AlarmState;
 
   int get activeCount => alarms.where((alarm) => alarm.enabled).length;
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/theme/app_colors.dart';
-import '../models/alarm.dart';
+import '../../../../core/models/alarm/alarm.dart';
 
 class AlarmCard extends StatelessWidget {
   const AlarmCard({
@@ -14,7 +14,7 @@ class AlarmCard extends StatelessWidget {
     required this.onDelete,
   });
 
-  final Alarm alarm;
+  final AlarmModel alarm;
   final ValueChanged<bool> onToggle;
   final VoidCallback onEdit;
   final VoidCallback onDelete;

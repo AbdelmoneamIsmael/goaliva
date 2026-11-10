@@ -1,16 +1,22 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:goaliva/core/repo/alarm_repo/alarm_repo.dart';
 
-import '../models/alarm.dart';
+import '../../../../core/models/alarm/alarm.dart';
 import 'alarm_state.dart';
 
 export 'alarm_state.dart';
 
 class AlarmCubit extends Cubit<AlarmState> {
-  AlarmCubit() : super(AlarmState(alarms: buildSampleAlarms()));
+  AlarmCubit({required this.alarmRepo})
+    : super(AlarmState(alarms: buildSampleAlarms()));
+  final AlarmRepo alarmRepo;
 
-  static List<Alarm> buildSampleAlarms() {
+  static List<AlarmModel> buildSampleAlarms() {
     return const [
-      Alarm(
+      AlarmModel(
+        year: 2026,
+        month: 11,
+        day: 10,
         id: 'alarm_1',
         title: 'Morning focus',
         description: 'Start the day with one quiet focus block.',
@@ -19,7 +25,10 @@ class AlarmCubit extends Cubit<AlarmState> {
         repeats: true,
         enabled: true,
       ),
-      Alarm(
+      AlarmModel(
+        year: 2026,
+        month: 11,
+        day: 10,
         id: 'alarm_2',
         title: 'Midday reset',
         description: 'Pause, breathe, and check your next task.',
@@ -28,7 +37,10 @@ class AlarmCubit extends Cubit<AlarmState> {
         repeats: true,
         enabled: true,
       ),
-      Alarm(
+      AlarmModel(
+        year: 2026,
+        month: 11,
+        day: 10,
         id: 'alarm_3',
         title: 'Evening review',
         description: 'Look back on progress and plan tomorrow.',
@@ -53,11 +65,11 @@ class AlarmCubit extends Cubit<AlarmState> {
     emit(state.copyWith(alarms: alarms));
   }
 
-  void addAlarm(Alarm alarm) {
+  void addAlarm(AlarmModel alarm) {
     emit(state.copyWith(alarms: [...state.alarms, alarm]));
   }
 
-  void updateAlarm(Alarm alarm) {
+  void updateAlarm(AlarmModel alarm) {
     final alarms = state.alarms.map((item) {
       if (item.id != alarm.id) return item;
       return alarm;

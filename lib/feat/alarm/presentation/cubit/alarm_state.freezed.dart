@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AlarmState {
 
- List<Alarm> get alarms;
+ List<AlarmModel> get alarms;
 /// Create a copy of AlarmState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -51,7 +51,7 @@ abstract mixin class $AlarmStateCopyWith<$Res>  {
   factory $AlarmStateCopyWith(AlarmState value, $Res Function(AlarmState) _then) = _$AlarmStateCopyWithImpl;
 @useResult
 $Res call({
- List<Alarm> alarms
+ List<AlarmModel> alarms
 });
 
 
@@ -71,7 +71,7 @@ class _$AlarmStateCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? alarms = null,}) {
   return _then(AlarmState(
 alarms: null == alarms ? _self.alarms : alarms // ignore: cast_nullable_to_non_nullable
-as List<Alarm>,
+as List<AlarmModel>,
   ));
 }
 
@@ -156,7 +156,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<Alarm> alarms)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<AlarmModel> alarms)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AlarmState() when $default != null:
 return $default(_that.alarms);case _:
@@ -177,7 +177,7 @@ return $default(_that.alarms);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<Alarm> alarms)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<AlarmModel> alarms)  $default,) {final _that = this;
 switch (_that) {
 case _AlarmState():
 return $default(_that.alarms);case _:
@@ -197,7 +197,7 @@ return $default(_that.alarms);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<Alarm> alarms)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<AlarmModel> alarms)?  $default,) {final _that = this;
 switch (_that) {
 case _AlarmState() when $default != null:
 return $default(_that.alarms);case _:
@@ -212,11 +212,11 @@ return $default(_that.alarms);case _:
 
 
 class _AlarmState extends AlarmState {
-  const _AlarmState({required  List<Alarm> alarms}): _alarms = alarms,super._();
+  const _AlarmState({required  List<AlarmModel> alarms}): _alarms = alarms,super._();
   
 
- final  List<Alarm> _alarms;
-@override List<Alarm> get alarms {
+ final  List<AlarmModel> _alarms;
+@override List<AlarmModel> get alarms {
   if (_alarms is EqualUnmodifiableListView) return _alarms;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_alarms);
@@ -255,7 +255,7 @@ abstract mixin class _$AlarmStateCopyWith<$Res> implements $AlarmStateCopyWith<$
   factory _$AlarmStateCopyWith(_AlarmState value, $Res Function(_AlarmState) _then) = __$AlarmStateCopyWithImpl;
 @override @useResult
 $Res call({
- List<Alarm> alarms
+ List<AlarmModel> alarms
 });
 
 
@@ -275,7 +275,7 @@ class __$AlarmStateCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? alarms = null,}) {
   return _then(_AlarmState(
 alarms: null == alarms ? _self._alarms : alarms // ignore: cast_nullable_to_non_nullable
-as List<Alarm>,
+as List<AlarmModel>,
   ));
 }
 

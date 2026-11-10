@@ -8,13 +8,13 @@ import '../../../../core/view/alarm_form/cubit/alarm_form_state.dart';
 import '../../../../core/widgets/confirm_action_dialog.dart';
 import '../../../../core/widgets/custom_empty_widgets.dart';
 import '../cubit/alarm_cubit.dart';
-import '../models/alarm.dart';
+import '../../../../core/models/alarm/alarm.dart';
 import '../widgets/alarm_card.dart';
 
 class AlarmPage extends StatelessWidget {
   const AlarmPage({super.key});
 
-  Future<void> _openForm(BuildContext context, {Alarm? alarm}) async {
+  Future<void> _openForm(BuildContext context, {AlarmModel? alarm}) async {
     final alarmCubit = context.read<AlarmCubit>();
 
     await AlarmFormSheet.show(
@@ -28,7 +28,10 @@ class AlarmPage extends StatelessWidget {
       onSave: (AlarmFormResult result) {
         if (result.id == null) {
           alarmCubit.addAlarm(
-            Alarm(
+            AlarmModel(
+              year: DateTime.now().year,
+              month: DateTime.now().month,
+              day: DateTime.now().day,
               id: 'alarm_${DateTime.now().millisecondsSinceEpoch}',
               title: result.title,
               description: result.description,
@@ -57,7 +60,7 @@ class AlarmPage extends StatelessWidget {
     );
   }
 
-  Future<void> _confirmDelete(BuildContext context, Alarm alarm) async {
+  Future<void> _confirmDelete(BuildContext context, AlarmModel alarm) async {
     final confirmed = await ConfirmActionDialog.show(
       context,
       titleKey: 'alarm.delete_title',
