@@ -57,6 +57,9 @@ flutter:
 
   assets:
     - assets/translations/
+    - assets/sounds/
+    - assets/images/
+    - assets/icons/
 
   fonts:
     - family: DMSans

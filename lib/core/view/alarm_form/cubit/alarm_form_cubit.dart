@@ -6,11 +6,14 @@ export 'alarm_form_state.dart';
 
 class AlarmFormCubit extends Cubit<AlarmFormState> {
   AlarmFormCubit({
-    String? id,
+    int? id,
     String title = '',
     String description = '',
     int? hour,
     int? minute,
+    int? year,
+    int? month,
+    int? day,
     bool repeats = false,
   }) : super(
          AlarmFormState(
@@ -19,6 +22,9 @@ class AlarmFormCubit extends Cubit<AlarmFormState> {
            description: description,
            hour: hour,
            minute: minute,
+           year: year ?? DateTime.now().year,
+           month: month ?? DateTime.now().month,
+           day: day ?? DateTime.now().day,
            repeats: repeats,
          ),
        );
@@ -44,6 +50,17 @@ class AlarmFormCubit extends Cubit<AlarmFormState> {
       state.copyWith(
         hour: hour,
         minute: minute,
+        fieldErrors: AlarmFormFieldErrors.empty,
+      ),
+    );
+  }
+
+  void setDate(DateTime date) {
+    emit(
+      state.copyWith(
+        year: date.year,
+        month: date.month,
+        day: date.day,
         fieldErrors: AlarmFormFieldErrors.empty,
       ),
     );
@@ -81,6 +98,9 @@ class AlarmFormCubit extends Cubit<AlarmFormState> {
       hour: state.hour!,
       minute: state.minute!,
       repeats: state.repeats,
+      year: state.year,
+      month: state.month,
+      day: state.day,
     );
   }
 

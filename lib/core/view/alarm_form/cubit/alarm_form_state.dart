@@ -21,12 +21,15 @@ abstract class AlarmFormFieldErrors with _$AlarmFormFieldErrors {
 @freezed
 abstract class AlarmFormResult with _$AlarmFormResult {
   const factory AlarmFormResult({
-    String? id,
+    int? id,
     required String title,
     required String description,
     required int hour,
     required int minute,
     required bool repeats,
+    required int year,
+    required int month,
+    required int day,
   }) = _AlarmFormResult;
 }
 
@@ -35,11 +38,14 @@ abstract class AlarmFormState with _$AlarmFormState {
   const AlarmFormState._();
 
   const factory AlarmFormState({
-    String? id,
+    int? id,
     @Default('') String title,
     @Default('') String description,
     int? hour,
     int? minute,
+    required int year,
+    required int month,
+    required int day,
     @Default(false) bool repeats,
     @Default(AlarmFormFieldErrors()) AlarmFormFieldErrors fieldErrors,
   }) = _AlarmFormState;
@@ -47,4 +53,6 @@ abstract class AlarmFormState with _$AlarmFormState {
   bool get isEditing => id != null;
 
   bool get hasTime => hour != null && minute != null;
+
+  DateTime get date => DateTime(year, month, day);
 }

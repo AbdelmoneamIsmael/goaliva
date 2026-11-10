@@ -285,7 +285,7 @@ as String?,
 /// @nodoc
 mixin _$AlarmFormResult {
 
- String? get id; String get title; String get description; int get hour; int get minute; bool get repeats;
+ int? get id; String get title; String get description; int get hour; int get minute; bool get repeats; int get year; int get month; int get day;
 /// Create a copy of AlarmFormResult
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -297,20 +297,20 @@ $AlarmFormResultCopyWith<AlarmFormResult> get copyWith => _$AlarmFormResultCopyW
 @override
 bool operator ==(Object other) {
   final _this = this as AlarmFormResult;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AlarmFormResult&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.title, _this.title) || other.title == _this.title)&&(identical(other.description, _this.description) || other.description == _this.description)&&(identical(other.hour, _this.hour) || other.hour == _this.hour)&&(identical(other.minute, _this.minute) || other.minute == _this.minute)&&(identical(other.repeats, _this.repeats) || other.repeats == _this.repeats));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AlarmFormResult&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.title, _this.title) || other.title == _this.title)&&(identical(other.description, _this.description) || other.description == _this.description)&&(identical(other.hour, _this.hour) || other.hour == _this.hour)&&(identical(other.minute, _this.minute) || other.minute == _this.minute)&&(identical(other.repeats, _this.repeats) || other.repeats == _this.repeats)&&(identical(other.year, _this.year) || other.year == _this.year)&&(identical(other.month, _this.month) || other.month == _this.month)&&(identical(other.day, _this.day) || other.day == _this.day));
 }
 
 
 @override
 int get hashCode {
   final _this = this as AlarmFormResult;
-  return Object.hash(runtimeType,_this.id,_this.title,_this.description,_this.hour,_this.minute,_this.repeats);
+  return Object.hash(runtimeType,_this.id,_this.title,_this.description,_this.hour,_this.minute,_this.repeats,_this.year,_this.month,_this.day);
 }
 
 @override
 String toString() {
   final _this = this as AlarmFormResult;
-  return 'AlarmFormResult(id: ${_this.id}, title: ${_this.title}, description: ${_this.description}, hour: ${_this.hour}, minute: ${_this.minute}, repeats: ${_this.repeats})';
+  return 'AlarmFormResult(id: ${_this.id}, title: ${_this.title}, description: ${_this.description}, hour: ${_this.hour}, minute: ${_this.minute}, repeats: ${_this.repeats}, year: ${_this.year}, month: ${_this.month}, day: ${_this.day})';
 }
 
 
@@ -321,7 +321,7 @@ abstract mixin class $AlarmFormResultCopyWith<$Res>  {
   factory $AlarmFormResultCopyWith(AlarmFormResult value, $Res Function(AlarmFormResult) _then) = _$AlarmFormResultCopyWithImpl;
 @useResult
 $Res call({
- String? id, String title, String description, int hour, int minute, bool repeats
+ int? id, String title, String description, int hour, int minute, bool repeats, int year, int month, int day
 });
 
 
@@ -338,15 +338,18 @@ class _$AlarmFormResultCopyWithImpl<$Res>
 
 /// Create a copy of AlarmFormResult
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? title = null,Object? description = null,Object? hour = null,Object? minute = null,Object? repeats = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? title = null,Object? description = null,Object? hour = null,Object? minute = null,Object? repeats = null,Object? year = null,Object? month = null,Object? day = null,}) {
   return _then(AlarmFormResult(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as int?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,hour: null == hour ? _self.hour : hour // ignore: cast_nullable_to_non_nullable
 as int,minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
 as int,repeats: null == repeats ? _self.repeats : repeats // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,year: null == year ? _self.year : year // ignore: cast_nullable_to_non_nullable
+as int,month: null == month ? _self.month : month // ignore: cast_nullable_to_non_nullable
+as int,day: null == day ? _self.day : day // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 
@@ -431,10 +434,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String title,  String description,  int hour,  int minute,  bool repeats)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String title,  String description,  int hour,  int minute,  bool repeats,  int year,  int month,  int day)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AlarmFormResult() when $default != null:
-return $default(_that.id,_that.title,_that.description,_that.hour,_that.minute,_that.repeats);case _:
+return $default(_that.id,_that.title,_that.description,_that.hour,_that.minute,_that.repeats,_that.year,_that.month,_that.day);case _:
   return orElse();
 
 }
@@ -452,10 +455,10 @@ return $default(_that.id,_that.title,_that.description,_that.hour,_that.minute,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String title,  String description,  int hour,  int minute,  bool repeats)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String title,  String description,  int hour,  int minute,  bool repeats,  int year,  int month,  int day)  $default,) {final _that = this;
 switch (_that) {
 case _AlarmFormResult():
-return $default(_that.id,_that.title,_that.description,_that.hour,_that.minute,_that.repeats);case _:
+return $default(_that.id,_that.title,_that.description,_that.hour,_that.minute,_that.repeats,_that.year,_that.month,_that.day);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -472,10 +475,10 @@ return $default(_that.id,_that.title,_that.description,_that.hour,_that.minute,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String title,  String description,  int hour,  int minute,  bool repeats)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String title,  String description,  int hour,  int minute,  bool repeats,  int year,  int month,  int day)?  $default,) {final _that = this;
 switch (_that) {
 case _AlarmFormResult() when $default != null:
-return $default(_that.id,_that.title,_that.description,_that.hour,_that.minute,_that.repeats);case _:
+return $default(_that.id,_that.title,_that.description,_that.hour,_that.minute,_that.repeats,_that.year,_that.month,_that.day);case _:
   return null;
 
 }
@@ -487,15 +490,18 @@ return $default(_that.id,_that.title,_that.description,_that.hour,_that.minute,_
 
 
 class _AlarmFormResult implements AlarmFormResult {
-  const _AlarmFormResult({this.id, required this.title, required this.description, required this.hour, required this.minute, required this.repeats});
+  const _AlarmFormResult({this.id, required this.title, required this.description, required this.hour, required this.minute, required this.repeats, required this.year, required this.month, required this.day});
   
 
-@override final  String? id;
+@override final  int? id;
 @override final  String title;
 @override final  String description;
 @override final  int hour;
 @override final  int minute;
 @override final  bool repeats;
+@override final  int year;
+@override final  int month;
+@override final  int day;
 
 /// Create a copy of AlarmFormResult
 /// with the given fields replaced by the non-null parameter values.
@@ -507,18 +513,18 @@ _$AlarmFormResultCopyWith<_AlarmFormResult> get copyWith => __$AlarmFormResultCo
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _AlarmFormResult&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.hour, hour) || other.hour == hour)&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.repeats, repeats) || other.repeats == repeats));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _AlarmFormResult&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.hour, hour) || other.hour == hour)&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.repeats, repeats) || other.repeats == repeats)&&(identical(other.year, year) || other.year == year)&&(identical(other.month, month) || other.month == month)&&(identical(other.day, day) || other.day == day));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,title,description,hour,minute,repeats);
+    return Object.hash(runtimeType,id,title,description,hour,minute,repeats,year,month,day);
 }
 
 @override
 String toString() {
-    return 'AlarmFormResult(id: $id, title: $title, description: $description, hour: $hour, minute: $minute, repeats: $repeats)';
+    return 'AlarmFormResult(id: $id, title: $title, description: $description, hour: $hour, minute: $minute, repeats: $repeats, year: $year, month: $month, day: $day)';
 }
 
 
@@ -529,7 +535,7 @@ abstract mixin class _$AlarmFormResultCopyWith<$Res> implements $AlarmFormResult
   factory _$AlarmFormResultCopyWith(_AlarmFormResult value, $Res Function(_AlarmFormResult) _then) = __$AlarmFormResultCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, String title, String description, int hour, int minute, bool repeats
+ int? id, String title, String description, int hour, int minute, bool repeats, int year, int month, int day
 });
 
 
@@ -546,15 +552,18 @@ class __$AlarmFormResultCopyWithImpl<$Res>
 
 /// Create a copy of AlarmFormResult
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? title = null,Object? description = null,Object? hour = null,Object? minute = null,Object? repeats = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? title = null,Object? description = null,Object? hour = null,Object? minute = null,Object? repeats = null,Object? year = null,Object? month = null,Object? day = null,}) {
   return _then(_AlarmFormResult(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as int?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,hour: null == hour ? _self.hour : hour // ignore: cast_nullable_to_non_nullable
 as int,minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
 as int,repeats: null == repeats ? _self.repeats : repeats // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,year: null == year ? _self.year : year // ignore: cast_nullable_to_non_nullable
+as int,month: null == month ? _self.month : month // ignore: cast_nullable_to_non_nullable
+as int,day: null == day ? _self.day : day // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 
@@ -564,7 +573,7 @@ as bool,
 /// @nodoc
 mixin _$AlarmFormState {
 
- String? get id; String get title; String get description; int? get hour; int? get minute; bool get repeats; AlarmFormFieldErrors get fieldErrors;
+ int? get id; String get title; String get description; int? get hour; int? get minute; int get year; int get month; int get day; bool get repeats; AlarmFormFieldErrors get fieldErrors;
 /// Create a copy of AlarmFormState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -576,20 +585,20 @@ $AlarmFormStateCopyWith<AlarmFormState> get copyWith => _$AlarmFormStateCopyWith
 @override
 bool operator ==(Object other) {
   final _this = this as AlarmFormState;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AlarmFormState&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.title, _this.title) || other.title == _this.title)&&(identical(other.description, _this.description) || other.description == _this.description)&&(identical(other.hour, _this.hour) || other.hour == _this.hour)&&(identical(other.minute, _this.minute) || other.minute == _this.minute)&&(identical(other.repeats, _this.repeats) || other.repeats == _this.repeats)&&(identical(other.fieldErrors, _this.fieldErrors) || other.fieldErrors == _this.fieldErrors));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AlarmFormState&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.title, _this.title) || other.title == _this.title)&&(identical(other.description, _this.description) || other.description == _this.description)&&(identical(other.hour, _this.hour) || other.hour == _this.hour)&&(identical(other.minute, _this.minute) || other.minute == _this.minute)&&(identical(other.year, _this.year) || other.year == _this.year)&&(identical(other.month, _this.month) || other.month == _this.month)&&(identical(other.day, _this.day) || other.day == _this.day)&&(identical(other.repeats, _this.repeats) || other.repeats == _this.repeats)&&(identical(other.fieldErrors, _this.fieldErrors) || other.fieldErrors == _this.fieldErrors));
 }
 
 
 @override
 int get hashCode {
   final _this = this as AlarmFormState;
-  return Object.hash(runtimeType,_this.id,_this.title,_this.description,_this.hour,_this.minute,_this.repeats,_this.fieldErrors);
+  return Object.hash(runtimeType,_this.id,_this.title,_this.description,_this.hour,_this.minute,_this.year,_this.month,_this.day,_this.repeats,_this.fieldErrors);
 }
 
 @override
 String toString() {
   final _this = this as AlarmFormState;
-  return 'AlarmFormState(id: ${_this.id}, title: ${_this.title}, description: ${_this.description}, hour: ${_this.hour}, minute: ${_this.minute}, repeats: ${_this.repeats}, fieldErrors: ${_this.fieldErrors})';
+  return 'AlarmFormState(id: ${_this.id}, title: ${_this.title}, description: ${_this.description}, hour: ${_this.hour}, minute: ${_this.minute}, year: ${_this.year}, month: ${_this.month}, day: ${_this.day}, repeats: ${_this.repeats}, fieldErrors: ${_this.fieldErrors})';
 }
 
 
@@ -600,7 +609,7 @@ abstract mixin class $AlarmFormStateCopyWith<$Res>  {
   factory $AlarmFormStateCopyWith(AlarmFormState value, $Res Function(AlarmFormState) _then) = _$AlarmFormStateCopyWithImpl;
 @useResult
 $Res call({
- String? id, String title, String description, int? hour, int? minute, bool repeats, AlarmFormFieldErrors fieldErrors
+ int? id, String title, String description, int? hour, int? minute, int year, int month, int day, bool repeats, AlarmFormFieldErrors fieldErrors
 });
 
 
@@ -617,14 +626,17 @@ class _$AlarmFormStateCopyWithImpl<$Res>
 
 /// Create a copy of AlarmFormState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? title = null,Object? description = null,Object? hour = freezed,Object? minute = freezed,Object? repeats = null,Object? fieldErrors = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? title = null,Object? description = null,Object? hour = freezed,Object? minute = freezed,Object? year = null,Object? month = null,Object? day = null,Object? repeats = null,Object? fieldErrors = null,}) {
   return _then(AlarmFormState(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as int?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,hour: freezed == hour ? _self.hour : hour // ignore: cast_nullable_to_non_nullable
 as int?,minute: freezed == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
-as int?,repeats: null == repeats ? _self.repeats : repeats // ignore: cast_nullable_to_non_nullable
+as int?,year: null == year ? _self.year : year // ignore: cast_nullable_to_non_nullable
+as int,month: null == month ? _self.month : month // ignore: cast_nullable_to_non_nullable
+as int,day: null == day ? _self.day : day // ignore: cast_nullable_to_non_nullable
+as int,repeats: null == repeats ? _self.repeats : repeats // ignore: cast_nullable_to_non_nullable
 as bool,fieldErrors: null == fieldErrors ? _self.fieldErrors : fieldErrors // ignore: cast_nullable_to_non_nullable
 as AlarmFormFieldErrors,
   ));
@@ -720,10 +732,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String title,  String description,  int? hour,  int? minute,  bool repeats,  AlarmFormFieldErrors fieldErrors)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String title,  String description,  int? hour,  int? minute,  int year,  int month,  int day,  bool repeats,  AlarmFormFieldErrors fieldErrors)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AlarmFormState() when $default != null:
-return $default(_that.id,_that.title,_that.description,_that.hour,_that.minute,_that.repeats,_that.fieldErrors);case _:
+return $default(_that.id,_that.title,_that.description,_that.hour,_that.minute,_that.year,_that.month,_that.day,_that.repeats,_that.fieldErrors);case _:
   return orElse();
 
 }
@@ -741,10 +753,10 @@ return $default(_that.id,_that.title,_that.description,_that.hour,_that.minute,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String title,  String description,  int? hour,  int? minute,  bool repeats,  AlarmFormFieldErrors fieldErrors)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String title,  String description,  int? hour,  int? minute,  int year,  int month,  int day,  bool repeats,  AlarmFormFieldErrors fieldErrors)  $default,) {final _that = this;
 switch (_that) {
 case _AlarmFormState():
-return $default(_that.id,_that.title,_that.description,_that.hour,_that.minute,_that.repeats,_that.fieldErrors);case _:
+return $default(_that.id,_that.title,_that.description,_that.hour,_that.minute,_that.year,_that.month,_that.day,_that.repeats,_that.fieldErrors);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -761,10 +773,10 @@ return $default(_that.id,_that.title,_that.description,_that.hour,_that.minute,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String title,  String description,  int? hour,  int? minute,  bool repeats,  AlarmFormFieldErrors fieldErrors)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String title,  String description,  int? hour,  int? minute,  int year,  int month,  int day,  bool repeats,  AlarmFormFieldErrors fieldErrors)?  $default,) {final _that = this;
 switch (_that) {
 case _AlarmFormState() when $default != null:
-return $default(_that.id,_that.title,_that.description,_that.hour,_that.minute,_that.repeats,_that.fieldErrors);case _:
+return $default(_that.id,_that.title,_that.description,_that.hour,_that.minute,_that.year,_that.month,_that.day,_that.repeats,_that.fieldErrors);case _:
   return null;
 
 }
@@ -776,14 +788,17 @@ return $default(_that.id,_that.title,_that.description,_that.hour,_that.minute,_
 
 
 class _AlarmFormState extends AlarmFormState {
-  const _AlarmFormState({this.id, this.title = '', this.description = '', this.hour, this.minute, this.repeats = false, this.fieldErrors = const AlarmFormFieldErrors()}): super._();
+  const _AlarmFormState({this.id, this.title = '', this.description = '', this.hour, this.minute, required this.year, required this.month, required this.day, this.repeats = false, this.fieldErrors = const AlarmFormFieldErrors()}): super._();
   
 
-@override final  String? id;
+@override final  int? id;
 @override@JsonKey() final  String title;
 @override@JsonKey() final  String description;
 @override final  int? hour;
 @override final  int? minute;
+@override final  int year;
+@override final  int month;
+@override final  int day;
 @override@JsonKey() final  bool repeats;
 @override@JsonKey() final  AlarmFormFieldErrors fieldErrors;
 
@@ -797,18 +812,18 @@ _$AlarmFormStateCopyWith<_AlarmFormState> get copyWith => __$AlarmFormStateCopyW
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _AlarmFormState&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.hour, hour) || other.hour == hour)&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.repeats, repeats) || other.repeats == repeats)&&(identical(other.fieldErrors, fieldErrors) || other.fieldErrors == fieldErrors));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _AlarmFormState&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.hour, hour) || other.hour == hour)&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.year, year) || other.year == year)&&(identical(other.month, month) || other.month == month)&&(identical(other.day, day) || other.day == day)&&(identical(other.repeats, repeats) || other.repeats == repeats)&&(identical(other.fieldErrors, fieldErrors) || other.fieldErrors == fieldErrors));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,title,description,hour,minute,repeats,fieldErrors);
+    return Object.hash(runtimeType,id,title,description,hour,minute,year,month,day,repeats,fieldErrors);
 }
 
 @override
 String toString() {
-    return 'AlarmFormState(id: $id, title: $title, description: $description, hour: $hour, minute: $minute, repeats: $repeats, fieldErrors: $fieldErrors)';
+    return 'AlarmFormState(id: $id, title: $title, description: $description, hour: $hour, minute: $minute, year: $year, month: $month, day: $day, repeats: $repeats, fieldErrors: $fieldErrors)';
 }
 
 
@@ -819,7 +834,7 @@ abstract mixin class _$AlarmFormStateCopyWith<$Res> implements $AlarmFormStateCo
   factory _$AlarmFormStateCopyWith(_AlarmFormState value, $Res Function(_AlarmFormState) _then) = __$AlarmFormStateCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, String title, String description, int? hour, int? minute, bool repeats, AlarmFormFieldErrors fieldErrors
+ int? id, String title, String description, int? hour, int? minute, int year, int month, int day, bool repeats, AlarmFormFieldErrors fieldErrors
 });
 
 
@@ -836,14 +851,17 @@ class __$AlarmFormStateCopyWithImpl<$Res>
 
 /// Create a copy of AlarmFormState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? title = null,Object? description = null,Object? hour = freezed,Object? minute = freezed,Object? repeats = null,Object? fieldErrors = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? title = null,Object? description = null,Object? hour = freezed,Object? minute = freezed,Object? year = null,Object? month = null,Object? day = null,Object? repeats = null,Object? fieldErrors = null,}) {
   return _then(_AlarmFormState(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as int?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,hour: freezed == hour ? _self.hour : hour // ignore: cast_nullable_to_non_nullable
 as int?,minute: freezed == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
-as int?,repeats: null == repeats ? _self.repeats : repeats // ignore: cast_nullable_to_non_nullable
+as int?,year: null == year ? _self.year : year // ignore: cast_nullable_to_non_nullable
+as int,month: null == month ? _self.month : month // ignore: cast_nullable_to_non_nullable
+as int,day: null == day ? _self.day : day // ignore: cast_nullable_to_non_nullable
+as int,repeats: null == repeats ? _self.repeats : repeats // ignore: cast_nullable_to_non_nullable
 as bool,fieldErrors: null == fieldErrors ? _self.fieldErrors : fieldErrors // ignore: cast_nullable_to_non_nullable
 as AlarmFormFieldErrors,
   ));

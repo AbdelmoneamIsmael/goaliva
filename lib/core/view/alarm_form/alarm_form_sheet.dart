@@ -14,11 +14,14 @@ class AlarmFormSheet extends StatefulWidget {
 
   static Future<bool> show(
     BuildContext context, {
-    String? id,
+    int? id,
     String title = '',
     String description = '',
     int? hour,
     int? minute,
+    int? year,
+    int? month,
+    int? day,
     bool repeats = false,
     required ValueChanged<AlarmFormResult> onSave,
   }) async {
@@ -37,6 +40,9 @@ class AlarmFormSheet extends StatefulWidget {
             description: description,
             hour: hour,
             minute: minute,
+            year: year,
+            month: month,
+            day: day,
             repeats: repeats,
           ),
           child: AlarmFormSheet(onSave: onSave),
@@ -82,6 +88,23 @@ class _AlarmFormSheetState extends State<AlarmFormSheet> {
     formCubit.setTime(hour: picked.hour, minute: picked.minute);
   }
 
+  Future<void> _pickDate() async {
+    final formCubit = context.read<AlarmFormCubit>();
+    final current = formCubit.state.date;
+    final now = DateTime.now();
+    final firstDate = DateTime(now.year - 1);
+    final lastDate = DateTime(now.year + 5);
+
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: current,
+      firstDate: firstDate,
+      lastDate: lastDate,
+    );
+    if (picked == null || !mounted) return;
+    formCubit.setDate(picked);
+  }
+
   void _onSave() {
     final result = context.read<AlarmFormCubit>().validate();
     if (result == null) return;
@@ -111,6 +134,9 @@ class _AlarmFormSheetState extends State<AlarmFormSheet> {
                   minute: state.minute!,
                 ).format(context)
               : 'alarm.time_hint'.tr();
+          final dateLabel = DateFormat.yMMMd(
+            context.locale.toString(),
+          ).format(state.date);
 
           return SingleChildScrollView(
             child: Column(
@@ -219,6 +245,49 @@ class _AlarmFormSheetState extends State<AlarmFormSheet> {
                   SizedBox(height: 6.h),
                   _FieldErrorText(messageKey: errors.timeKey!),
                 ],
+                SizedBox(height: 16.h),
+                Text(
+                  'alarm.field_date'.tr(),
+                  style: theme.textTheme.titleSmall,
+                ),
+                SizedBox(height: 11.h),
+                InkWell(
+                  onTap: _pickDate,
+                  borderRadius: BorderRadius.circular(12.r),
+                  child: InputDecorator(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: colorScheme.surface,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 14.h,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                        borderSide: BorderSide(
+                          color: colorScheme.outline.withValues(alpha: 0.5),
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                        borderSide: BorderSide(
+                          color: colorScheme.primary,
+                          width: 1.5,
+                        ),
+                      ),
+                      suffixIcon: Icon(
+                        Icons.calendar_today_rounded,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    child: Text(
+                      dateLabel,
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        color: colorScheme.onSurface,
+                      ),
+                    ),
+                  ),
+                ),
                 SizedBox(height: 16.h),
                 Container(
                   padding: EdgeInsets.symmetric(

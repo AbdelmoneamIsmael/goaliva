@@ -51,6 +51,8 @@
     "field_description_helper": "ملاحظة قصيرة تساعدك تتعرّف على المنبّه لاحقًا.",
     "field_time": "الوقت",
     "time_hint": "اختر وقتًا",
+    "field_date": "التاريخ",
+    "date_hint": "اختر تاريخًا",
     "field_repeat": "تكرار",
     "field_repeat_sub": "يعاد في نفس الموعد",
     "repeats": "يتكرر",
@@ -64,7 +66,15 @@
     "validation_title_max": "العنوان لازم يكون ٦٠ حرف أو أقل.",
     "validation_description_required": "الوصف مطلوب.",
     "validation_description_max": "الوصف لازم يكون ١٦٠ حرف أو أقل.",
-    "validation_time_required": "اختر وقتًا لهذا المنبّه."
+    "validation_time_required": "اختر وقتًا لهذا المنبّه.",
+    "stop_alarm": "إيقاف المنبّه",
+    "toast_on": "تم تشغيل المنبّه",
+    "toast_off": "تم إيقاف المنبّه",
+    "toast_error": "تعذر تحديث المنبّه",
+    "toast_updated": "تم تحديث المنبّه",
+    "toast_added": "تمت إضافة المنبّه",
+    "remaining": "بعد {time}",
+    "remaining_passed": "انتهى"
   },
   "calendar": {
     "title": "التقويم",

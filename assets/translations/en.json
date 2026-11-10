@@ -51,6 +51,8 @@
     "field_description_helper": "A short note helps you recognize the alarm later.",
     "field_time": "Time",
     "time_hint": "Choose a time",
+    "field_date": "Date",
+    "date_hint": "Choose a date",
     "field_repeat": "Repeat",
     "field_repeat_sub": "Fire again on the same schedule",
     "repeats": "Repeats",
@@ -64,7 +66,15 @@
     "validation_title_max": "Title must be 60 characters or fewer.",
     "validation_description_required": "Description is required.",
     "validation_description_max": "Description must be 160 characters or fewer.",
-    "validation_time_required": "Choose a time for this alarm."
+    "validation_time_required": "Choose a time for this alarm.",
+    "stop_alarm": "Stop the alarm",
+    "toast_on": "Alarm turned on",
+    "toast_off": "Alarm turned off",
+    "toast_error": "Couldn't update the alarm",
+    "toast_updated": "Alarm updated",
+    "toast_added": "Alarm added",
+    "remaining": "In {time}",
+    "remaining_passed": "Passed"
   },
   "calendar": {
     "title": "Calendar",

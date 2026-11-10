@@ -14,7 +14,7 @@ class AlarmModel extends Equatable {
     required this.day,
   });
 
-  final String id;
+  final int id;
   final String title;
   final String description;
   final int hour;
@@ -58,5 +58,8 @@ class AlarmModel extends Equatable {
     minute,
     repeats,
     enabled,
+    year,
+    month,
+    day,
   ];
 }

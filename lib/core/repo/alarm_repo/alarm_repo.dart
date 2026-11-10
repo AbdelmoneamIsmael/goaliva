@@ -6,5 +6,8 @@ abstract class AlarmRepo {
   // set alarm
   Future<void> setAlarm(AlarmModel alarm);
 
+  // stop alarm
+  Future<void> stopAlarm(int id);
+
 
 }

@@ -24,15 +24,19 @@ class AlarmPage extends StatelessWidget {
       description: alarm?.description ?? '',
       hour: alarm?.hour,
       minute: alarm?.minute,
+      year: alarm?.year,
+      month: alarm?.month,
+      day: alarm?.day,
       repeats: alarm?.repeats ?? false,
       onSave: (AlarmFormResult result) {
         if (result.id == null) {
           alarmCubit.addAlarm(
+            context,
             AlarmModel(
-              year: DateTime.now().year,
-              month: DateTime.now().month,
-              day: DateTime.now().day,
-              id: 'alarm_${DateTime.now().millisecondsSinceEpoch}',
+              year: result.year,
+              month: result.month,
+              day: result.day,
+              id: alarmCubit.nextAlarmId(),
               title: result.title,
               description: result.description,
               hour: result.hour,
@@ -48,12 +52,16 @@ class AlarmPage extends StatelessWidget {
           (item) => item.id == result.id,
         );
         alarmCubit.updateAlarm(
+          context,
           existing.copyWith(
             title: result.title,
             description: result.description,
             hour: result.hour,
             minute: result.minute,
             repeats: result.repeats,
+            year: result.year,
+            month: result.month,
+            day: result.day,
           ),
         );
       },
@@ -127,7 +135,7 @@ class AlarmPage extends StatelessWidget {
                             alarm: alarm,
                             onToggle: (_) => context
                                 .read<AlarmCubit>()
-                                .toggleEnabled(alarm.id),
+                                .toggleEnabled(context, alarm),
                             onEdit: () => _openForm(context, alarm: alarm),
                             onDelete: () => _confirmDelete(context, alarm),
                           ),

@@ -1,11 +1,14 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/models/alarm/alarm_schedule.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/alarm/alarm.dart';
 
-class AlarmCard extends StatelessWidget {
+class AlarmCard extends StatefulWidget {
   const AlarmCard({
     super.key,
     required this.alarm,
@@ -19,9 +22,57 @@ class AlarmCard extends StatelessWidget {
   final VoidCallback onEdit;
   final VoidCallback onDelete;
 
+  @override
+  State<AlarmCard> createState() => _AlarmCardState();
+}
+
+class _AlarmCardState extends State<AlarmCard> {
+  Timer? _ticker;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTickerIfNeeded();
+  }
+
+  @override
+  void didUpdateWidget(covariant AlarmCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.alarm.enabled != widget.alarm.enabled ||
+        oldWidget.alarm.year != widget.alarm.year ||
+        oldWidget.alarm.month != widget.alarm.month ||
+        oldWidget.alarm.day != widget.alarm.day ||
+        oldWidget.alarm.hour != widget.alarm.hour ||
+        oldWidget.alarm.minute != widget.alarm.minute ||
+        oldWidget.alarm.repeats != widget.alarm.repeats) {
+      _startTickerIfNeeded();
+    }
+  }
+
+  @override
+  void dispose() {
+    _ticker?.cancel();
+    super.dispose();
+  }
+
+  void _startTickerIfNeeded() {
+    _ticker?.cancel();
+    if (!widget.alarm.enabled) return;
+    _ticker = Timer.periodic(const Duration(seconds: 30), (_) {
+      if (!mounted) return;
+      setState(() {});
+    });
+  }
+
   String _formatTime(BuildContext context) {
-    final time = TimeOfDay(hour: alarm.hour, minute: alarm.minute);
+    final time = TimeOfDay(hour: widget.alarm.hour, minute: widget.alarm.minute);
     return time.format(context);
+  }
+
+  String _remainingChipLabel() {
+    final remaining = AlarmSchedule.remainingLabel(widget.alarm);
+    if (remaining == null) return 'alarm.remaining_passed'.tr();
+    return 'alarm.remaining'.tr(namedArgs: {'time': remaining});
   }
 
   @override
@@ -34,7 +85,7 @@ class AlarmCard extends StatelessWidget {
     final secondary = isDark
         ? AppColors.darkSecondary
         : AppColors.lightSecondary;
-    final mutedOpacity = alarm.enabled ? 1.0 : 0.55;
+    final mutedOpacity = widget.alarm.enabled ? 1.0 : 0.55;
 
     return Opacity(
       opacity: mutedOpacity,
@@ -77,14 +128,14 @@ class AlarmCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        alarm.title,
+                        widget.alarm.title,
                         style: theme.textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w700,
                         ),
                       ),
                       SizedBox(height: 4.h),
                       Text(
-                        alarm.description,
+                        widget.alarm.description,
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: colorScheme.onSurfaceVariant,
                           height: 1.35,
@@ -93,31 +144,46 @@ class AlarmCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Switch.adaptive(value: alarm.enabled, onChanged: onToggle),
+                Switch.adaptive(
+                  value: widget.alarm.enabled,
+                  onChanged: widget.onToggle,
+                ),
               ],
             ),
             SizedBox(height: 12.h),
             Row(
               children: [
-                _MetaChip(
-                  icon: Icons.schedule_rounded,
-                  label: _formatTime(context),
-                  accent: colorScheme.primary,
+                Expanded(
+                  child: Wrap(
+                    spacing: 8.w,
+                    runSpacing: 8.h,
+                    children: [
+                      _MetaChip(
+                        icon: Icons.schedule_rounded,
+                        label: _formatTime(context),
+                        accent: colorScheme.primary,
+                      ),
+                      _MetaChip(
+                        icon: widget.alarm.repeats
+                            ? Icons.repeat_rounded
+                            : Icons.looks_one_rounded,
+                        label: widget.alarm.repeats
+                            ? 'alarm.repeats'.tr()
+                            : 'alarm.once'.tr(),
+                        accent: secondary,
+                      ),
+                      if (widget.alarm.enabled)
+                        _MetaChip(
+                          icon: Icons.hourglass_top_rounded,
+                          label: _remainingChipLabel(),
+                          accent: colorScheme.tertiary,
+                        ),
+                    ],
+                  ),
                 ),
-                SizedBox(width: 8.w),
-                _MetaChip(
-                  icon: alarm.repeats
-                      ? Icons.repeat_rounded
-                      : Icons.looks_one_rounded,
-                  label: alarm.repeats
-                      ? 'alarm.repeats'.tr()
-                      : 'alarm.once'.tr(),
-                  accent: secondary,
-                ),
-                const Spacer(),
                 IconButton(
                   tooltip: 'alarm.edit'.tr(),
-                  onPressed: onEdit,
+                  onPressed: widget.onEdit,
                   icon: Icon(
                     Icons.edit_rounded,
                     size: 20.sp,
@@ -126,7 +192,7 @@ class AlarmCard extends StatelessWidget {
                 ),
                 IconButton(
                   tooltip: 'alarm.delete'.tr(),
-                  onPressed: onDelete,
+                  onPressed: widget.onDelete,
                   icon: Icon(
                     Icons.delete_outline_rounded,
                     size: 20.sp,
