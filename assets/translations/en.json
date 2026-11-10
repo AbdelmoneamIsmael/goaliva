@@ -45,8 +45,37 @@
     "sample_task": "Write a personal reminder",
     "sample_goal": "Finish one Flutter lesson"
   },
+  "motivation": {
+    "title": "Motivation",
+    "subtitle": "Keep your reasons close. Open a topic when you need a push.",
+    "featured_label": "Spark for today",
+    "featured_fallback": "Your reasons are still here when you need them.",
+    "topics_label": "Motivation topics",
+    "add_button": "Add motivation",
+    "add_coming_soon": "Adding motivation is coming later.",
+    "quote_count": "{count} quotes",
+    "empty_topic": "No quotes in this topic yet.",
+    "edit_title": "Edit quote",
+    "edit_hint": "Write your motivation quote",
+    "save": "Save",
+    "delete_title": "Remove quote",
+    "delete_message": "Remove this quote from the topic?",
+    "topics": {
+      "medicine": "Medicine",
+      "movement": "Movement",
+      "focus": "Focus"
+    },
+    "quotes": {
+      "medicine_1": "Taking your medicine today is a quiet act of care for tomorrow.",
+      "medicine_2": "One dose at a time. Consistency is the win.",
+      "medicine_3": "You are protecting your future self. Keep going.",
+      "movement_1": "Show up for five minutes. Momentum will meet you there.",
+      "movement_2": "Your body remembers every time you chose to move.",
+      "focus_1": "One focused session today is progress toward your goal.",
+      "focus_2": "Clear the noise. Protect the next deep block."
+    }
+  },
   "placeholders": {
-    "motivation_title": "Motivation",
     "settings_title": "Settings"
   }
 }
