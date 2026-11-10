@@ -8,41 +8,45 @@
     "cancel": "Cancel",
     "confirm": "Confirm"
   },
-  "welcome": {
-    "tagline": "Your Goals. Your Momentum.",
-    "promise": "Keep your next step clear and your motivation personal.",
-    "primary_action": "Primary",
-    "secondary_action": "Secondary",
-    "tertiary_action": "Tertiary",
-    "last_action": "Last action: {action}",
-    "no_action": "Tap a button to try each style.",
-    "toggle_language": "Switch to Arabic",
-    "toggle_theme_light": "Switch to light",
-    "toggle_theme_dark": "Switch to dark",
-    "open_showcase": "Browse widget samples"
+  "nav": {
+    "home": "Home",
+    "calendar": "Calendar",
+    "motivation": "Motivation",
+    "settings": "Settings"
   },
-  "showcase": {
-    "title": "Widget samples",
-    "section_inputs": "Inputs",
-    "section_selection": "Selection",
-    "section_actions": "Actions",
-    "section_layout": "Layout",
-    "task_title": "Task title",
-    "task_hint": "Study Flutter for 30 minutes",
-    "task_helper": "Keep it specific and doable today.",
-    "search_hint": "Search messages or tasks",
-    "dropdown_hint": "Choose a collection",
-    "toggle_tasks": "Tasks",
-    "toggle_motivation": "Motivation",
-    "filter_habits": "Daily habits",
-    "open_dialog": "Confirm dialog",
-    "dialog_title": "Delete this task?",
-    "dialog_message": "This action cannot be undone.",
-    "link_leading": "Need a reminder? ",
-    "link_action": "Create one",
-    "glass_sample": "Glass container for elevated surfaces.",
-    "empty_title": "No tasks yet",
-    "empty_description": "Create your first task to start building momentum.",
-    "empty_action": "Add task"
+  "home": {
+    "brand_subtitle": "Home",
+    "greeting": "Good morning, Alex",
+    "greeting_wave": "👋",
+    "motto": "Every small step brings you closer.",
+    "streak": "14-day streak",
+    "momentum_title": "This week's momentum",
+    "momentum_status": "5 / 7 Days On Track",
+    "grid_alarms": "Alarms",
+    "grid_alarms_count": "3 active",
+    "grid_events": "Events",
+    "grid_events_count": "2 today",
+    "grid_tasks": "Tasks",
+    "grid_tasks_count": "5 open",
+    "grid_goals": "Goals",
+    "grid_goals_count": "4 active",
+    "today_motivation_label": "Today's motivation",
+    "today_motivation_quote": "One focused session today is progress toward your goal.",
+    "today_motivation_collection": "Learning Motivation"
+  },
+  "calendar": {
+    "title": "Calendar",
+    "type_alarm": "Alarm",
+    "type_event": "Event",
+    "type_task": "Task",
+    "type_goal": "Goal",
+    "sample_alarm": "Morning focus alarm",
+    "sample_event": "Team check-in",
+    "sample_task": "Write a personal reminder",
+    "sample_goal": "Finish one Flutter lesson"
+  },
+  "placeholders": {
+    "motivation_title": "Motivation",
+    "settings_title": "Settings"
   }
 }

@@ -5,8 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:goaliva/core/theme/app_theme.dart';
 import 'package:goaliva/core/theme/theme_cubit.dart';
-import 'package:goaliva/feat/welcome/presentation/cubit/welcome_cubit.dart';
-import 'package:goaliva/feat/welcome/presentation/pages/welcome_page.dart';
+import 'package:goaliva/feat/shell/presentation/pages/shell_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -20,9 +19,12 @@ void main() {
     prefs = await SharedPreferences.getInstance();
   });
 
-  testWidgets('welcome screen shows title and records primary tap', (
-    tester,
-  ) async {
+  testWidgets('shell shows home grid and calendar tab', (tester) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
     await tester.pumpWidget(
       EasyLocalization(
         supportedLocales: const [Locale('en'), Locale('ar')],
@@ -42,10 +44,7 @@ void main() {
                 locale: locale,
                 supportedLocales: context.supportedLocales,
                 localizationsDelegates: context.localizationDelegates,
-                home: BlocProvider(
-                  create: (_) => WelcomeCubit(),
-                  child: const WelcomePage(),
-                ),
+                home: const ShellPage(),
               ),
             );
           },
@@ -55,14 +54,27 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text('Goaliva'), findsOneWidget);
-    expect(find.text('Your Goals. Your Momentum.'), findsOneWidget);
-    expect(find.text('Switch to Arabic'), findsOneWidget);
+    expect(find.text('Home'), findsWidgets);
+    expect(find.text('Calendar'), findsWidgets);
+    expect(find.text('Motivation'), findsWidgets);
+    expect(find.text('Settings'), findsWidgets);
+    expect(find.textContaining('Good morning, Alex'), findsOneWidget);
+    expect(find.text('Alarms'), findsOneWidget);
+    expect(find.text('Events'), findsOneWidget);
+    expect(find.text('Tasks'), findsOneWidget);
+    expect(find.text('Goals'), findsOneWidget);
 
-    await tester.tap(find.text('Primary'));
-    await tester.pump();
+    await tester.scrollUntilVisible(
+      find.text("Today's motivation"),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text("Today's motivation"), findsOneWidget);
 
-    expect(find.text('Last action: Primary'), findsOneWidget);
-    expect(find.text('Browse widget samples'), findsOneWidget);
+    await tester.tap(find.text('Calendar'));
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('Good morning, Alex'), findsNothing);
+    expect(find.text('Calendar'), findsWidgets);
   });
 }
