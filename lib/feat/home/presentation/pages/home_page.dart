@@ -24,29 +24,33 @@ class HomePage extends StatelessWidget {
           backgroundColor: theme.scaffoldBackgroundColor,
           body: SafeArea(
             bottom: false,
-            child: ListView(
+            child: SingleChildScrollView(
               padding: EdgeInsetsDirectional.fromSTEB(20.w, 12.h, 20.w, 28.h),
-              children: [
-                _HeroHeader(isArabic: isArabic, isDark: isDark),
-                SizedBox(height: 22.h),
-                AppWeekCalendar(
-                  title: 'home.momentum_title'.tr(),
-                  statusText: 'home.momentum_status'.tr(),
-                  focusedDay: state.focusedDay,
-                  selectedDay: state.selectedDay,
-                  completedDays: state.completedDays,
-                  onDaySelected: (selected, focused) {
-                    context.read<HomeCubit>().selectDay(selected, focused);
-                  },
-                  onPageChanged: (focused) {
-                    context.read<HomeCubit>().changeWeek(focused);
-                  },
-                ),
-                SizedBox(height: 22.h),
-                _QuickGrid(isDark: isDark),
-                SizedBox(height: 22.h),
-                _TodayMotivationCard(isDark: isDark),
-              ],
+              child: Column(
+                children: [
+                  _HeroHeader(isArabic: isArabic, isDark: isDark),
+                  SizedBox(height: 22.h),
+                  AppWeekCalendar(
+                    title: 'home.momentum_title'.tr(),
+                    statusText: 'home.momentum_status'.tr(),
+                    focusedDay: state.focusedDay,
+                    selectedDay: state.selectedDay,
+                    completedDays: state.completedDays,
+                    onDaySelected: (selected, focused) {
+                      context.read<HomeCubit>().selectDay(selected, focused);
+                    },
+                    onPageChanged: (focused) {
+                      context.read<HomeCubit>().changeWeek(focused);
+                    },
+                  ),
+                  SizedBox(height: 22.h),
+                  _QuickGrid(isDark: isDark),
+                  SizedBox(height: 22.h),
+                  _TodayMotivationCard(isDark: isDark),
+                ],
+              ),
+
+              // ],
             ),
           ),
         );

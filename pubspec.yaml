@@ -31,8 +31,12 @@ dependencies:
   # for calendar
   table_calendar: ^3.3.0
   calendar_view: ^2.0.0
+  # for database
   sqflite: ^2.4.6
+  # for freezed and handel state management
   freezed_annotation: ^3.1.0
+  # for permissions
+  permission_handler: ^13.0.2
 
 dev_dependencies:
   flutter_test:

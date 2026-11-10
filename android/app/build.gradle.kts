@@ -6,7 +6,8 @@ plugins {
 
 android {
     namespace = "com.abdelmoneam.goaliva"
-    compileSdk = flutter.compileSdkVersion
+    // permission_handler_android 14.1.1 compiles against SDK 37.
+    compileSdk = maxOf(flutter.compileSdkVersion, 37)
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
