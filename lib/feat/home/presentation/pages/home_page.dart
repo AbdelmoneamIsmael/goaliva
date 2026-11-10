@@ -1,39 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/app_week_calendar.dart';
+import '../cubit/home_cubit.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  late DateTime _focusedDay;
-  late DateTime _selectedDay;
-  late Set<DateTime> _completedDays;
-
-  @override
-  void initState() {
-    super.initState();
-    final now = DateTime.now();
-    _focusedDay = now;
-    _selectedDay = now;
-    _completedDays = _mockCompletedDays(now);
-  }
-
-  /// Marks Mon–Thu of the focused week as completed (design mock).
-  Set<DateTime> _mockCompletedDays(DateTime around) {
-    final monday = around.subtract(Duration(days: around.weekday - 1));
-    return {
-      for (var i = 0; i < 4; i++)
-        DateTime(monday.year, monday.month, monday.day + i),
-    };
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,42 +16,40 @@ class _HomePageState extends State<HomePage> {
     final isDark = theme.brightness == Brightness.dark;
     final isArabic = context.locale.languageCode == 'ar';
 
-    return Scaffold(
-      body: SafeArea(
-        bottom: false,
-        child: ListView(
-          padding: EdgeInsetsDirectional.fromSTEB(20.w, 12.h, 20.w, 28.h),
-          children: [
-            const _HomeTopBar(),
-            SizedBox(height: 24.h),
-            _WelcomeHeader(isArabic: isArabic),
-            SizedBox(height: 20.h),
-            AppWeekCalendar(
-              title: 'home.momentum_title'.tr(),
-              statusText: 'home.momentum_status'.tr(),
-              focusedDay: _focusedDay,
-              selectedDay: _selectedDay,
-              completedDays: _completedDays,
-              onDaySelected: (selected, focused) {
-                setState(() {
-                  _selectedDay = selected;
-                  _focusedDay = focused;
-                });
-              },
-              onPageChanged: (focused) {
-                setState(() {
-                  _focusedDay = focused;
-                  _completedDays = _mockCompletedDays(focused);
-                });
-              },
+    return BlocBuilder<HomeCubit, HomeState>(
+      builder: (context, state) {
+        return Scaffold(
+          body: SafeArea(
+            bottom: false,
+            child: ListView(
+              padding: EdgeInsetsDirectional.fromSTEB(20.w, 12.h, 20.w, 28.h),
+              children: [
+                const _HomeTopBar(),
+                SizedBox(height: 24.h),
+                _WelcomeHeader(isArabic: isArabic),
+                SizedBox(height: 20.h),
+                AppWeekCalendar(
+                  title: 'home.momentum_title'.tr(),
+                  statusText: 'home.momentum_status'.tr(),
+                  focusedDay: state.focusedDay,
+                  selectedDay: state.selectedDay,
+                  completedDays: state.completedDays,
+                  onDaySelected: (selected, focused) {
+                    context.read<HomeCubit>().selectDay(selected, focused);
+                  },
+                  onPageChanged: (focused) {
+                    context.read<HomeCubit>().changeWeek(focused);
+                  },
+                ),
+                SizedBox(height: 20.h),
+                _QuickGrid(isDark: isDark),
+                SizedBox(height: 20.h),
+                _TodayMotivationCard(isDark: isDark),
+              ],
             ),
-            SizedBox(height: 20.h),
-            _QuickGrid(isDark: isDark),
-            SizedBox(height: 20.h),
-            _TodayMotivationCard(isDark: isDark),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

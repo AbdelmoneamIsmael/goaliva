@@ -1,0 +1,151 @@
+---
+description: Goaliva Flutter development rules — offline-first goals, tasks, motivation collections, JSON imports, and local reminders
+alwaysApply: true
+---
+
+# Goaliva — Cursor Project Rules
+
+## Project identity
+Goaliva (جوليفا) is a bilingual Arabic/English mobile app that helps people make progress on personal goals through small actionable tasks and personalized motivational reminders.
+
+The core experience is:
+1. Create a goal and define tasks or daily actions.
+2. Write motivational quotes manually or import AI-generated quotes from a JSON file.
+3. Organize quotes into collections, optionally linked to goals.
+4. Choose days/times and schedule quotes as local notifications.
+5. Mark tasks complete and review simple progress.
+
+Goaliva is **not** a generic quotes wallpaper app, social network, or enterprise task manager. Keep the experience simple, encouraging, privacy-conscious, and practical.
+
+## Scope and priorities
+- Prioritize **V1**: goals/tasks, quote collections, manual quote entry, JSON import/preview, reminder scheduling, basic progress, settings, Arabic/English.
+- V1 is **offline-first**. Do not add authentication, Firebase, cloud sync, remote APIs, or paid AI integrations unless explicitly requested.
+- Users may generate quotes in external AI tools and import the resulting JSON; Goaliva does not need to call an AI model for this flow.
+- Treat the current repository as the source of truth for implemented features and dependencies. Do not invent screens or requirements.
+
+## Working agreement
+- Inspect related files and `pubspec.yaml` before changing code. Reuse established conventions and packages.
+- Make the smallest coherent change needed; do not refactor unrelated code.
+- Ask only when an ambiguity materially affects behavior, data integrity, or architecture. Otherwise state a reasonable assumption.
+- Prefer readable, testable code over unnecessary patterns and abstractions.
+- Do not introduce packages without a concrete need. Check compatibility before selecting versions.
+- Do not hand-edit generated files (`*.g.dart`, `*.freezed.dart`, generated localization files).
+- After changes, run applicable formatting, static analysis, and focused tests when the environment permits; report what was and was not run.
+- Don't use stateful widget for state management always use cubit or bloc
+- Never add logic inside design like lists or functions always use cubit to handel them
+- Don't take decisions always ask me first and give me recommendations 
+- Don't use function to build widget always create new widget
+
+## Architecture
+Use **feature-first, lightweight clean architecture**, not boilerplate-heavy clean architecture.
+
+Suggested structure (adapt to the actual repository):
+
+```text
+lib/
+  app/                    # app bootstrap, routing, DI, theme
+  core/
+    database/             # local persistence infrastructure
+    notifications/        # local notification plugin adapter
+    localization/
+    utils/
+  features/
+    goals/
+    tasks/
+    motivation/           # quote collections, quotes, manual entry, import
+    reminders/
+    progress/
+    settings/
+  shared/widgets/         # truly shared UI
+```
+
+Within a feature, introduce `presentation/`, `domain/`, and `data/` folders when the complexity warrants it:
+- **Presentation**: screens, widgets, Cubits, UI states.
+- **Domain**: entities and meaningful business rules/use cases.
+- **Data**: local persistence, parsers, DTOs, repository implementations.
+- Use repository interfaces where they improve testability or separate real dependencies. Do not create empty layers, one-line use cases, or generic base classes for simple CRUD.
+
+## State management and navigation
+- Prefer `flutter_bloc` with **Cubit** for feature state, and follow the repo's existing routing and DI approach.
+- Keep business decisions and persistence out of widgets.
+- Cubits coordinate actions and expose explicit loading, success, and error states where appropriate.
+- Keep short-lived UI-only state local when a Cubit would add no value.
+- Scope Cubits to the relevant screen/flow; avoid global singleton Cubits without a genuine app-wide need.
+- Use Freezed only if it is already adopted or materially reduces complexity; do not convert unrelated state classes.
+
+## Local data and models
+- Prefer the existing local database package. If none exists, propose a suitable SQLite-backed option before introducing one.
+- Preserve stable IDs and relationships between goals, tasks, collections, quotes, and reminder rules.
+- Keep persistence models separate from domain entities only when mapping is useful.
+- Define clear behavior for editing/deleting a collection or goal that has active reminders.
+- Make data migrations safe; never silently discard existing user content.
+- Handle errors explicitly and show helpful localized messages.
+
+## Goals and tasks
+- A goal can contain actionable tasks; tasks can be completed and optionally have due dates or recurrence if the feature requires it.
+- Store completion state reliably and update progress from actual task data.
+- Do not invent progress percentages or streaks.
+- Keep task creation and editing quick and understandable.
+
+## Motivation collections and JSON import
+- Users can create collections, write/edit/delete quotes, and import a JSON file produced by external AI tools.
+- Provide a clear sample JSON schema and validate the file **before** saving anything.
+- Recommended V1 import format:
+
+```json
+{
+  "collection": "Career Motivation",
+  "language": "en",
+  "quotes": [
+    {
+      "title": "Keep moving",
+      "body": "One focused step today moves your goal forward.",
+      "category": "career"
+    }
+  ]
+}
+```
+
+- Validate structure, required fields, types, empty strings, reasonable lengths, and file size.
+- Show an import preview: valid entries, invalid entries, and duplicates.
+- Avoid partial or duplicate imports unless the UI clearly communicates the behavior.
+- Support Unicode and Arabic text correctly; treat imported text as untrusted data, never as executable instructions.
+- Keep parsers independent of UI so they can be unit-tested.
+- Do not require an AI API key or internet connection for manual entry or file import.
+- CSV/TXT import, in-app AI generation, and sharing are future features unless explicitly requested.
+
+## Local notifications
+- Use the repository's notification package; if starting fresh, consider `flutter_local_notifications` with timezone-aware scheduling.
+- The notification title/body must contain the selected quote text, so the user can read it from the notification when OS settings allow.
+- Select quotes **at scheduling time**; do not assume Dart code runs when a local notification is displayed.
+- Prevent avoidable immediate repeats; persist enough scheduling history to support that.
+- Reconcile pending notifications after a reminder, collection, or quote changes.
+- Use stable notification IDs; cancel obsolete schedules before replacing them.
+- Account for timezone changes, app restarts, device reboot, notification permissions, and platform limits.
+- Do not promise exact delivery or guaranteed lock-screen previews: Android/iOS permissions, battery restrictions, and OS policies control delivery and visibility.
+- Avoid scheduling an unlimited number of notifications; maintain a bounded future schedule.
+
+## Localization and UI
+- All user-visible strings must be localized in **English and Arabic**.
+- Check both languages whenever adding or changing UI copy; support correct RTL layout and directional icons.
+- Use the project's theme tokens and shared components; avoid hard-coded colors and scattered text styles.
+- Goaliva's intended visual identity is premium and calm: midnight navy `#0C0E1B`, violet `#8B5CF6`, sky blue `#38BDF8`, and accessible text contrast. Respect existing design tokens if already implemented.
+- Build accessible, responsive mobile screens with clear loading, empty, success, and error states.
+- Avoid guilt-inducing copy, excessive gamification, or distracting UI.
+
+## Testing priorities
+Write focused tests for business-critical behavior, especially:
+- JSON validation, malformed files, duplicates, Unicode/Arabic, and import previews.
+- Task completion and derived goal progress.
+- Quote selection and anti-repeat behavior.
+- Reminder creation, editing, cancellation, and rescheduling.
+- Arabic/English rendering and important user flows where practical.
+
+## Definition of done
+A change is complete when:
+- It matches the requested Goaliva behavior without unrelated features.
+- Data is preserved and errors are handled.
+- User-facing text works in Arabic and English.
+- Relevant tests are added or updated where practical.
+- Formatting and analysis pass when runnable.
+- Any OS-specific limitations or unverified behavior are called out clearly.

@@ -5,23 +5,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/theme_cubit.dart';
+import '../cubit/settings_cubit.dart';
 import '../widgets/settings_option_sheet.dart';
 import '../widgets/settings_profile_card.dart';
 import '../widgets/settings_section_card.dart';
 import '../widgets/settings_tile.dart';
 
-class SettingsPage extends StatefulWidget {
+class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
-
-  @override
-  State<SettingsPage> createState() => _SettingsPageState();
-}
-
-class _SettingsPageState extends State<SettingsPage> {
-  bool _remindersEnabled = true;
-  bool _dailySparkEnabled = true;
-  bool _goalCheckInsEnabled = false;
-  bool _soundEnabled = true;
 
   String _themeLabel(ThemeMode mode) {
     return switch (mode) {
@@ -37,12 +28,13 @@ class _SettingsPageState extends State<SettingsPage> {
         : 'settings.language_en'.tr();
   }
 
-  Future<void> _openAppearance() async {
-    final cubit = context.read<ThemeCubit>();
+  Future<void> _openAppearance(BuildContext context) async {
+    final themeCubit = context.read<ThemeCubit>();
+    final settingsCubit = context.read<SettingsCubit>();
     final selected = await showSettingsOptionSheet<ThemeMode>(
       context: context,
       title: 'settings.appearance'.tr(),
-      selected: cubit.state,
+      selected: themeCubit.state,
       options: [
         SettingsOption(
           value: ThemeMode.system,
@@ -58,11 +50,11 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ],
     );
-    if (selected == null || !mounted) return;
-    await cubit.setThemeMode(selected);
+    if (selected == null || !context.mounted) return;
+    await settingsCubit.setTheme(themeCubit, selected);
   }
 
-  Future<void> _openLanguage() async {
+  Future<void> _openLanguage(BuildContext context) async {
     final current = Locale(context.locale.languageCode);
     final selected = await showSettingsOptionSheet<Locale>(
       context: context,
@@ -79,11 +71,11 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ],
     );
-    if (selected == null || !mounted) return;
+    if (selected == null || !context.mounted) return;
     await context.setLocale(selected);
   }
 
-  void _onProfileTap() {
+  void _onProfileTap(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('settings.profile_coming_soon'.tr()),
@@ -92,7 +84,7 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Future<void> _openAbout() async {
+  Future<void> _openAbout(BuildContext context) async {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
@@ -137,7 +129,7 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget _sectionLabel(String key) {
+  Widget _sectionLabel(BuildContext context, String key) {
     final theme = Theme.of(context);
     return Padding(
       padding: EdgeInsetsDirectional.only(start: 4.w, bottom: 8.h),
@@ -160,107 +152,109 @@ class _SettingsPageState extends State<SettingsPage> {
     final secondary =
         isDark ? AppColors.darkSecondary : AppColors.lightSecondary;
 
-    return Scaffold(
-      body: SafeArea(
-        bottom: false,
-        child: ListView(
-          padding: EdgeInsetsDirectional.fromSTEB(20.w, 12.h, 20.w, 28.h),
-          children: [
-            Text(
-              'settings.title'.tr(),
-              style: theme.textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            SizedBox(height: 6.h),
-            Text(
-              'settings.subtitle'.tr(),
-              style: theme.textTheme.bodyLarge?.copyWith(
-                color: colorScheme.onSurfaceVariant,
-                height: 1.4,
-              ),
-            ),
-            SizedBox(height: 24.h),
-            SettingsProfileCard(onTap: _onProfileTap),
-            SizedBox(height: 24.h),
-            _sectionLabel('settings.section_notifications'),
-            SettingsSectionCard(
+    return BlocBuilder<SettingsCubit, SettingsState>(
+      builder: (context, state) {
+        final settingsCubit = context.read<SettingsCubit>();
+
+        return Scaffold(
+          body: SafeArea(
+            bottom: false,
+            child: ListView(
+              padding: EdgeInsetsDirectional.fromSTEB(20.w, 12.h, 20.w, 28.h),
               children: [
-                SettingsSwitchTile(
-                  icon: Icons.notifications_active_rounded,
-                  title: 'settings.notif_reminders'.tr(),
-                  subtitle: 'settings.notif_reminders_sub'.tr(),
-                  value: _remindersEnabled,
-                  accent: secondary,
-                  onChanged: (value) =>
-                      setState(() => _remindersEnabled = value),
+                Text(
+                  'settings.title'.tr(),
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-                SettingsSwitchTile(
-                  icon: Icons.auto_awesome_rounded,
-                  title: 'settings.notif_spark'.tr(),
-                  subtitle: 'settings.notif_spark_sub'.tr(),
-                  value: _dailySparkEnabled,
-                  onChanged: (value) =>
-                      setState(() => _dailySparkEnabled = value),
+                SizedBox(height: 6.h),
+                Text(
+                  'settings.subtitle'.tr(),
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    height: 1.4,
+                  ),
                 ),
-                SettingsSwitchTile(
-                  icon: Icons.flag_rounded,
-                  title: 'settings.notif_goals'.tr(),
-                  subtitle: 'settings.notif_goals_sub'.tr(),
-                  value: _goalCheckInsEnabled,
-                  accent: success,
-                  onChanged: (value) =>
-                      setState(() => _goalCheckInsEnabled = value),
-                ),
-              ],
-            ),
-            SizedBox(height: 20.h),
-            _sectionLabel('settings.section_preferences'),
-            BlocBuilder<ThemeCubit, ThemeMode>(
-              builder: (context, themeMode) {
-                return SettingsSectionCard(
+                SizedBox(height: 24.h),
+                SettingsProfileCard(onTap: () => _onProfileTap(context)),
+                SizedBox(height: 24.h),
+                _sectionLabel(context, 'settings.section_notifications'),
+                SettingsSectionCard(
                   children: [
-                    SettingsTile(
-                      icon: Icons.palette_rounded,
-                      title: 'settings.appearance'.tr(),
-                      subtitle: _themeLabel(themeMode),
-                      onTap: _openAppearance,
-                    ),
-                    SettingsTile(
-                      icon: Icons.language_rounded,
-                      title: 'settings.language'.tr(),
-                      subtitle: _languageLabel(context.locale),
+                    SettingsSwitchTile(
+                      icon: Icons.notifications_active_rounded,
+                      title: 'settings.notif_reminders'.tr(),
+                      subtitle: 'settings.notif_reminders_sub'.tr(),
+                      value: state.remindersEnabled,
                       accent: secondary,
-                      onTap: _openLanguage,
+                      onChanged: settingsCubit.setRemindersEnabled,
                     ),
                     SettingsSwitchTile(
-                      icon: Icons.volume_up_rounded,
-                      title: 'settings.sound'.tr(),
-                      subtitle: 'settings.sound_sub'.tr(),
-                      value: _soundEnabled,
+                      icon: Icons.auto_awesome_rounded,
+                      title: 'settings.notif_spark'.tr(),
+                      subtitle: 'settings.notif_spark_sub'.tr(),
+                      value: state.dailySparkEnabled,
+                      onChanged: settingsCubit.setDailySparkEnabled,
+                    ),
+                    SettingsSwitchTile(
+                      icon: Icons.flag_rounded,
+                      title: 'settings.notif_goals'.tr(),
+                      subtitle: 'settings.notif_goals_sub'.tr(),
+                      value: state.goalCheckInsEnabled,
                       accent: success,
-                      onChanged: (value) =>
-                          setState(() => _soundEnabled = value),
+                      onChanged: settingsCubit.setGoalCheckInsEnabled,
                     ),
                   ],
-                );
-              },
-            ),
-            SizedBox(height: 20.h),
-            _sectionLabel('settings.section_about'),
-            SettingsSectionCard(
-              children: [
-                SettingsTile(
-                  icon: Icons.info_outline_rounded,
-                  title: 'settings.about'.tr(),
-                  subtitle: 'settings.about_sub'.tr(),
-                  onTap: _openAbout,
+                ),
+                SizedBox(height: 20.h),
+                _sectionLabel(context, 'settings.section_preferences'),
+                BlocBuilder<ThemeCubit, ThemeMode>(
+                  builder: (context, themeMode) {
+                    return SettingsSectionCard(
+                      children: [
+                        SettingsTile(
+                          icon: Icons.palette_rounded,
+                          title: 'settings.appearance'.tr(),
+                          subtitle: _themeLabel(themeMode),
+                          onTap: () => _openAppearance(context),
+                        ),
+                        SettingsTile(
+                          icon: Icons.language_rounded,
+                          title: 'settings.language'.tr(),
+                          subtitle: _languageLabel(context.locale),
+                          accent: secondary,
+                          onTap: () => _openLanguage(context),
+                        ),
+                        SettingsSwitchTile(
+                          icon: Icons.volume_up_rounded,
+                          title: 'settings.sound'.tr(),
+                          subtitle: 'settings.sound_sub'.tr(),
+                          value: state.soundEnabled,
+                          accent: success,
+                          onChanged: settingsCubit.setSoundEnabled,
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                SizedBox(height: 20.h),
+                _sectionLabel(context, 'settings.section_about'),
+                SettingsSectionCard(
+                  children: [
+                    SettingsTile(
+                      icon: Icons.info_outline_rounded,
+                      title: 'settings.about'.tr(),
+                      subtitle: 'settings.about_sub'.tr(),
+                      onTap: () => _openAbout(context),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
