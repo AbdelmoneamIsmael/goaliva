@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_toast.dart';
 import '../../../../core/theme/theme_cubit.dart';
 import '../cubit/settings_cubit.dart';
 import '../widgets/settings_option_sheet.dart';
@@ -76,12 +77,7 @@ class SettingsPage extends StatelessWidget {
   }
 
   void _onProfileTap(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('settings.profile_coming_soon'.tr()),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
+    AppToast.show(context, 'settings.profile_coming_soon'.tr());
   }
 
   Future<void> _openAbout(BuildContext context) async {

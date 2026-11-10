@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:goaliva/core/repo/alarm_repo/alarm_repo.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'app.dart';
 import 'core/di/injection.dart';
@@ -18,8 +19,9 @@ Future<void> main() async {
 
   // The Android activity is attached by the first frame. Requesting earlier
   // makes permission_handler fail with "Unable to detect current Android Activity."
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    initializeApp();
+  WidgetsBinding.instance.addPostFrameCallback((_) async {
+    await initializeApp();
+    await sl<AlarmRepo>().initialize();
   });
 
   runApp(

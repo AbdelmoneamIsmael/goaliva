@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/theme/app_toast.dart';
 import '../cubit/motivation_cubit.dart';
 import '../models/motivation_models.dart';
 import '../widgets/motivation_add_button.dart';
@@ -14,12 +15,7 @@ class MotivationPage extends StatelessWidget {
   const MotivationPage({super.key});
 
   void _onAddPressed(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('motivation.add_coming_soon'.tr()),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
+    AppToast.show(context, 'motivation.add_coming_soon'.tr());
   }
 
   Future<void> _openTopic(

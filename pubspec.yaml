@@ -39,6 +39,8 @@ dependencies:
   permission_handler: ^13.0.2
   # for alarm
   alarm: ^5.15.0
+  # for toast notifications
+  toastification: ^3.2.2
 
 dev_dependencies:
   flutter_test:
