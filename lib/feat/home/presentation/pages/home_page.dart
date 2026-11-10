@@ -5,6 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/app_week_calendar.dart';
+import '../../../alarm/presentation/cubit/alarm_cubit.dart';
+import '../../../alarm/presentation/pages/alarm_page.dart';
 import '../cubit/home_cubit.dart';
 
 class HomePage extends StatelessWidget {
@@ -64,7 +66,9 @@ class _HeroHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final secondary = isDark ? AppColors.darkSecondary : AppColors.lightSecondary;
+    final secondary = isDark
+        ? AppColors.darkSecondary
+        : AppColors.lightSecondary;
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(28.r),
@@ -78,7 +82,9 @@ class _HeroHeader extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: colorScheme.primary.withValues(alpha: isDark ? 0.35 : 0.28),
+              color: colorScheme.primary.withValues(
+                alpha: isDark ? 0.35 : 0.28,
+              ),
               blurRadius: 28,
               offset: Offset(0, 14.h),
             ),
@@ -152,7 +158,10 @@ class _HeroHeader extends StatelessWidget {
                                   ? AppColors.darkSuccess
                                   : AppColors.lightSuccess,
                               shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white, width: 1.5),
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 1.5,
+                              ),
                             ),
                           ),
                         ),
@@ -208,7 +217,10 @@ class _HeroHeader extends StatelessWidget {
                 Align(
                   alignment: AlignmentDirectional.centerStart,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.w,
+                      vertical: 8.h,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.white.withValues(alpha: 0.16),
                       borderRadius: BorderRadius.circular(999.r),
@@ -286,57 +298,80 @@ class _QuickGrid extends StatelessWidget {
 
   final bool isDark;
 
+  Future<void> _openAlarms(BuildContext context) async {
+    final cubit = context.read<AlarmCubit>();
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) =>
+            BlocProvider.value(value: cubit, child: const AlarmPage()),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final success = isDark ? AppColors.darkSuccess : AppColors.lightSuccess;
-    final secondary = isDark ? AppColors.darkSecondary : AppColors.lightSecondary;
+    final secondary = isDark
+        ? AppColors.darkSecondary
+        : AppColors.lightSecondary;
 
-    final tiles = [
-      (
-        Icons.alarm_rounded,
-        'home.grid_alarms'.tr(),
-        'home.grid_alarms_count'.tr(),
-        secondary,
-      ),
-      (
-        Icons.event_rounded,
-        'home.grid_events'.tr(),
-        'home.grid_events_count'.tr(),
-        colorScheme.primary,
-      ),
-      (
-        Icons.checklist_rounded,
-        'home.grid_tasks'.tr(),
-        'home.grid_tasks_count'.tr(),
-        success,
-      ),
-      (
-        Icons.flag_rounded,
-        'home.grid_goals'.tr(),
-        'home.grid_goals_count'.tr(),
-        colorScheme.primary,
-      ),
-    ];
+    return BlocBuilder<AlarmCubit, AlarmState>(
+      builder: (context, alarmState) {
+        final tiles = [
+          (
+            Icons.alarm_rounded,
+            'home.grid_alarms'.tr(),
+            'home.grid_alarms_count'.tr(
+              namedArgs: {'count': '${alarmState.activeCount}'},
+            ),
+            secondary,
+            () => _openAlarms(context),
+          ),
+          (
+            Icons.event_rounded,
+            'home.grid_events'.tr(),
+            'home.grid_events_count'.tr(),
+            colorScheme.primary,
+            null,
+          ),
+          (
+            Icons.checklist_rounded,
+            'home.grid_tasks'.tr(),
+            'home.grid_tasks_count'.tr(),
+            success,
+            null,
+          ),
+          (
+            Icons.flag_rounded,
+            'home.grid_goals'.tr(),
+            'home.grid_goals_count'.tr(),
+            colorScheme.primary,
+            null,
+          ),
+        ];
 
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: tiles.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 14.h,
-        crossAxisSpacing: 14.w,
-        childAspectRatio: 1.3,
-      ),
-      itemBuilder: (context, index) {
-        final tile = tiles[index];
-        return _QuickGridTile(
-          icon: tile.$1,
-          title: tile.$2,
-          subtitle: tile.$3,
-          accent: tile.$4,
-          isDark: isDark,
+        return GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: tiles.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 14.h,
+            crossAxisSpacing: 14.w,
+            childAspectRatio: 1.3,
+          ),
+          itemBuilder: (context, index) {
+            final tile = tiles[index];
+            return _QuickGridTile(
+              icon: tile.$1,
+              title: tile.$2,
+              subtitle: tile.$3,
+              accent: tile.$4,
+              isDark: isDark,
+              onTap: tile.$5,
+            );
+          },
         );
       },
     );
@@ -350,6 +385,7 @@ class _QuickGridTile extends StatelessWidget {
     required this.subtitle,
     required this.accent,
     required this.isDark,
+    this.onTap,
   });
 
   final IconData icon;
@@ -357,61 +393,69 @@ class _QuickGridTile extends StatelessWidget {
   final String subtitle;
   final Color accent;
   final bool isDark;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Container(
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.darkSurface : AppColors.lightSurface,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
         borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(
-          color: isDark ? AppColors.darkStroke : AppColors.lightStroke,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: accent.withValues(alpha: isDark ? 0.18 : 0.12),
-            blurRadius: 18,
-            offset: Offset(0, 8.h),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 40.w,
-            height: 40.w,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  accent.withValues(alpha: isDark ? 0.9 : 1),
-                  accent.withValues(alpha: isDark ? 0.55 : 0.65),
-                ],
+        child: Container(
+          padding: EdgeInsets.all(16.w),
+          decoration: BoxDecoration(
+            color: isDark ? AppColors.darkSurface : AppColors.lightSurface,
+            borderRadius: BorderRadius.circular(20.r),
+            border: Border.all(
+              color: isDark ? AppColors.darkStroke : AppColors.lightStroke,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: accent.withValues(alpha: isDark ? 0.18 : 0.12),
+                blurRadius: 18,
+                offset: Offset(0, 8.h),
               ),
-              borderRadius: BorderRadius.circular(14.r),
-            ),
-            child: Icon(icon, color: Colors.white, size: 21.sp),
+            ],
           ),
-          const Spacer(),
-          Text(
-            title,
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w700,
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 40.w,
+                height: 40.w,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      accent.withValues(alpha: isDark ? 0.9 : 1),
+                      accent.withValues(alpha: isDark ? 0.55 : 0.65),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(14.r),
+                ),
+                child: Icon(icon, color: Colors.white, size: 21.sp),
+              ),
+              const Spacer(),
+              Text(
+                title,
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              SizedBox(height: 3.h),
+              Text(
+                subtitle,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: 3.h),
-          Text(
-            subtitle,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -485,11 +529,14 @@ class _TodayMotivationCard extends StatelessWidget {
                     ),
                     SizedBox(height: 14.h),
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10.w,
+                        vertical: 6.h,
+                      ),
                       decoration: BoxDecoration(
-                        color: colorScheme.primary
-                            .withValues(alpha: isDark ? 0.22 : 0.12),
+                        color: colorScheme.primary.withValues(
+                          alpha: isDark ? 0.22 : 0.12,
+                        ),
                         borderRadius: BorderRadius.circular(999.r),
                       ),
                       child: Text(

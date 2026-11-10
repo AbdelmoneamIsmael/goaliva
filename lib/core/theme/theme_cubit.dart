@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ThemeCubit extends Cubit<ThemeMode> {
-  ThemeCubit(this._prefs) : super(_read(_prefs));
+import 'theme_state.dart';
+
+export 'theme_state.dart';
+
+class ThemeCubit extends Cubit<ThemeState> {
+  ThemeCubit(this._prefs) : super(ThemeState(mode: _read(_prefs)));
 
   static const _key = 'theme_mode';
 
@@ -18,13 +22,14 @@ class ThemeCubit extends Cubit<ThemeMode> {
   }
 
   Future<void> setThemeMode(ThemeMode mode) async {
-    emit(mode);
+    emit(ThemeState(mode: mode));
     await _prefs.setString(_key, mode.name);
   }
 
   Future<void> toggle(Brightness platformBrightness) async {
-    final isDark = state == ThemeMode.dark ||
-        (state == ThemeMode.system && platformBrightness == Brightness.dark);
+    final current = state.mode;
+    final isDark = current == ThemeMode.dark ||
+        (current == ThemeMode.system && platformBrightness == Brightness.dark);
     await setThemeMode(isDark ? ThemeMode.light : ThemeMode.dark);
   }
 }

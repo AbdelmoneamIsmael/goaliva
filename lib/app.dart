@@ -22,14 +22,14 @@ class GoalivaApp extends StatelessWidget {
         builder: (context, child) {
           final locale = context.locale;
 
-          return BlocBuilder<ThemeCubit, ThemeMode>(
-            builder: (context, themeMode) {
+          return BlocBuilder<ThemeCubit, ThemeState>(
+            builder: (context, themeState) {
               return MaterialApp.router(
                 title: 'Goaliva',
                 debugShowCheckedModeBanner: false,
                 theme: AppTheme.light(locale),
                 darkTheme: AppTheme.dark(locale),
-                themeMode: themeMode,
+                themeMode: themeState.mode,
                 locale: locale,
                 supportedLocales: context.supportedLocales,
                 localizationsDelegates: context.localizationDelegates,

@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import 'calendar_state.dart';
+
+export 'calendar_state.dart';
 
 enum CalendarItemType { alarm, event, task, goal }
 
@@ -19,13 +22,6 @@ class CalendarItem extends Equatable {
 
   @override
   List<Object?> get props => [type, title];
-}
-
-class CalendarState extends Equatable {
-  const CalendarState();
-
-  @override
-  List<Object?> get props => [];
 }
 
 class CalendarCubit extends Cubit<CalendarState> {

@@ -34,7 +34,7 @@ class SettingsPage extends StatelessWidget {
     final selected = await showSettingsOptionSheet<ThemeMode>(
       context: context,
       title: 'settings.appearance'.tr(),
-      selected: themeCubit.state,
+      selected: themeCubit.state.mode,
       options: [
         SettingsOption(
           value: ThemeMode.system,
@@ -209,14 +209,14 @@ class SettingsPage extends StatelessWidget {
                 ),
                 SizedBox(height: 20.h),
                 _sectionLabel(context, 'settings.section_preferences'),
-                BlocBuilder<ThemeCubit, ThemeMode>(
-                  builder: (context, themeMode) {
+                BlocBuilder<ThemeCubit, ThemeState>(
+                  builder: (context, themeState) {
                     return SettingsSectionCard(
                       children: [
                         SettingsTile(
                           icon: Icons.palette_rounded,
                           title: 'settings.appearance'.tr(),
-                          subtitle: _themeLabel(themeMode),
+                          subtitle: _themeLabel(themeState.mode),
                           onTap: () => _openAppearance(context),
                         ),
                         SettingsTile(

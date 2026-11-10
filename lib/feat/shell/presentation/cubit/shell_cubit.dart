@@ -1,14 +1,8 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ShellState extends Equatable {
-  const ShellState({this.currentIndex = 0});
+import 'shell_state.dart';
 
-  final int currentIndex;
-
-  @override
-  List<Object?> get props => [currentIndex];
-}
+export 'shell_state.dart';
 
 class ShellCubit extends Cubit<ShellState> {
   ShellCubit() : super(const ShellState());

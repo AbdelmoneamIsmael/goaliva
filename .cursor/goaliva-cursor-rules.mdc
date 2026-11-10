@@ -69,9 +69,10 @@ Within a feature, introduce `presentation/`, `domain/`, and `data/` folders when
 - Prefer `flutter_bloc` with **Cubit** for feature state, and follow the repo's existing routing and DI approach.
 - Keep business decisions and persistence out of widgets.
 - Cubits coordinate actions and expose explicit loading, success, and error states where appropriate.
+- Keep Cubit classes in their own file and put all related state/result/error classes in a separate sibling `*_state.dart` file (for example `alarm_form_cubit.dart` + `alarm_form_state.dart`). Do not define state classes inside the cubit file.
+- Cubit states must use **Freezed** (`@freezed` in the sibling `*_state.dart` file). Run `build_runner` after state changes. Do not hand-edit generated `*.freezed.dart` files. Domain models may stay on Equatable unless Freezed is needed there.
 - Keep short-lived UI-only state local when a Cubit would add no value.
 - Scope Cubits to the relevant screen/flow; avoid global singleton Cubits without a genuine app-wide need.
-- Use Freezed only if it is already adopted or materially reduces complexity; do not convert unrelated state classes.
 
 ## Local data and models
 - Prefer the existing local database package. If none exists, propose a suitable SQLite-backed option before introducing one.

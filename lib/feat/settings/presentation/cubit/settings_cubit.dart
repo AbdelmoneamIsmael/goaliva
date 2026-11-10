@@ -1,44 +1,10 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/theme/theme_cubit.dart';
+import 'settings_state.dart';
 
-class SettingsState extends Equatable {
-  const SettingsState({
-    this.remindersEnabled = true,
-    this.dailySparkEnabled = true,
-    this.goalCheckInsEnabled = false,
-    this.soundEnabled = true,
-  });
-
-  final bool remindersEnabled;
-  final bool dailySparkEnabled;
-  final bool goalCheckInsEnabled;
-  final bool soundEnabled;
-
-  SettingsState copyWith({
-    bool? remindersEnabled,
-    bool? dailySparkEnabled,
-    bool? goalCheckInsEnabled,
-    bool? soundEnabled,
-  }) {
-    return SettingsState(
-      remindersEnabled: remindersEnabled ?? this.remindersEnabled,
-      dailySparkEnabled: dailySparkEnabled ?? this.dailySparkEnabled,
-      goalCheckInsEnabled: goalCheckInsEnabled ?? this.goalCheckInsEnabled,
-      soundEnabled: soundEnabled ?? this.soundEnabled,
-    );
-  }
-
-  @override
-  List<Object?> get props => [
-        remindersEnabled,
-        dailySparkEnabled,
-        goalCheckInsEnabled,
-        soundEnabled,
-      ];
-}
+export 'settings_state.dart';
 
 class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit() : super(const SettingsState());

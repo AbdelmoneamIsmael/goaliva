@@ -1,43 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../models/motivation_models.dart';
+import 'motivation_state.dart';
 
-class MotivationState extends Equatable {
-  const MotivationState({required this.topics});
-
-  final List<MotivationTopic> topics;
-
-  MotivationQuote get featuredQuote {
-    for (final topic in topics) {
-      if (topic.quotes.isNotEmpty) return topic.quotes.first;
-    }
-    return MotivationQuote(
-      id: 'fallback',
-      text: 'motivation.featured_fallback'.tr(),
-    );
-  }
-
-  String get featuredTopicTitleKey {
-    for (final topic in topics) {
-      if (topic.quotes.isNotEmpty) return topic.titleKey;
-    }
-    return 'motivation.title';
-  }
-
-  MotivationTopic? topicById(String id) {
-    for (final topic in topics) {
-      if (topic.id == id) return topic;
-    }
-    return null;
-  }
-
-  @override
-  List<Object?> get props => [topics];
-}
+export 'motivation_state.dart';
 
 class MotivationCubit extends Cubit<MotivationState> {
   MotivationCubit() : super(MotivationState(topics: buildSampleTopics()));

@@ -1,32 +1,8 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomeState extends Equatable {
-  const HomeState({
-    required this.focusedDay,
-    required this.selectedDay,
-    required this.completedDays,
-  });
+import 'home_state.dart';
 
-  final DateTime focusedDay;
-  final DateTime selectedDay;
-  final Set<DateTime> completedDays;
-
-  HomeState copyWith({
-    DateTime? focusedDay,
-    DateTime? selectedDay,
-    Set<DateTime>? completedDays,
-  }) {
-    return HomeState(
-      focusedDay: focusedDay ?? this.focusedDay,
-      selectedDay: selectedDay ?? this.selectedDay,
-      completedDays: completedDays ?? this.completedDays,
-    );
-  }
-
-  @override
-  List<Object?> get props => [focusedDay, selectedDay, completedDays];
-}
+export 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit({DateTime? now}) : super(_initial(now ?? DateTime.now()));

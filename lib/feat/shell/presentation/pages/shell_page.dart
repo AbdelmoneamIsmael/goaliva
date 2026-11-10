@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../alarm/presentation/cubit/alarm_cubit.dart';
 import '../../../calendar/presentation/cubit/calendar_cubit.dart';
 import '../../../calendar/presentation/pages/calendar_page.dart';
 import '../../../home/presentation/cubit/home_cubit.dart';
@@ -23,6 +24,7 @@ class ShellPage extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => ShellCubit()),
         BlocProvider(create: (_) => HomeCubit()),
+        BlocProvider(create: (_) => AlarmCubit()),
         BlocProvider(create: (_) => CalendarCubit()),
         BlocProvider(create: (_) => MotivationCubit()),
         BlocProvider(create: (_) => SettingsCubit()),
@@ -47,10 +49,7 @@ class _ShellView extends StatelessWidget {
     return BlocBuilder<ShellCubit, ShellState>(
       builder: (context, state) {
         return Scaffold(
-          body: IndexedStack(
-            index: state.currentIndex,
-            children: _pages,
-          ),
+          body: IndexedStack(index: state.currentIndex, children: _pages),
           bottomNavigationBar: Padding(
             padding: EdgeInsetsDirectional.only(
               start: 20.w,
