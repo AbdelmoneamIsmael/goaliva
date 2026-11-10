@@ -26,11 +26,20 @@ class CalendarItem extends Equatable {
 
 class CalendarCubit extends Cubit<CalendarState> {
   CalendarCubit({DateTime? day}) : super(const CalendarState()) {
+    final today = day ?? DateTime.now();
+    final date = DateTime(today.year, today.month, today.day);
+    // DayView builds one page per day. The package default runs from 1970 to
+    // year 275759, and that page count breaks PageView layout when the page
+    // width is not a whole pixel.
+    minDay = DateTime(date.year - 5, 1, 1);
+    maxDay = DateTime(date.year + 5, 12, 31);
     controller = EventController<CalendarItem>();
-    controller.addAll(buildSampleEvents(day ?? DateTime.now()));
+    controller.addAll(buildSampleEvents(date));
   }
 
   late final EventController<CalendarItem> controller;
+  late final DateTime minDay;
+  late final DateTime maxDay;
 
   static List<CalendarEventData<CalendarItem>> buildSampleEvents(DateTime day) {
     final date = DateTime(day.year, day.month, day.day);
