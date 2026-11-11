@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:goaliva/core/util/functoins/parsers.dart';
 
 class AlarmModel extends Equatable {
   const AlarmModel({
@@ -24,6 +25,37 @@ class AlarmModel extends Equatable {
   final int year;
   final int month;
   final int day;
+
+  factory AlarmModel.fromMap(Map<String, Object?> map) {
+    return AlarmModel(
+      id: asInt(map['id']),
+      title: map['title'] as String? ?? '',
+      description: map['description'] as String? ?? '',
+      hour: asInt(map['hour']),
+      minute: asInt(map['minute']),
+      repeats: asBool(map['repeats']),
+      enabled: asBool(map['enabled']),
+      year: asInt(map['year']),
+      month: asInt(map['month']),
+      day: asInt(map['day']),
+    );
+  }
+
+  Map<String, Object?> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'hour': hour,
+      'minute': minute,
+      'repeats': repeats ? 1 : 0,
+      'enabled': enabled ? 1 : 0,
+      'year': year,
+      'month': month,
+      'day': day,
+    };
+  }
+
   AlarmModel copyWith({
     String? title,
     String? description,

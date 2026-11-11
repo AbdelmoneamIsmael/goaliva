@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:goaliva/core/di/injection.dart';
+import 'package:goaliva/core/repo/alarm_repo/alarm_local_repo.dart';
 import 'package:goaliva/core/repo/alarm_repo/alarm_repo.dart';
 
 import '../../../alarm/presentation/cubit/alarm_cubit.dart';
@@ -26,9 +27,12 @@ class ShellPage extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => ShellCubit()),
         BlocProvider(create: (_) => HomeCubit()),
-        BlocProvider(create: (_) => AlarmCubit(
-          alarmRepo: sl<AlarmRepo>(),
-        )),
+        BlocProvider(
+          create: (_) => AlarmCubit(
+            alarmRepo: sl<AlarmRepo>(),
+            alarmLocalRepo: sl<AlarmLocalRepo>(),
+          ),
+        ),
         BlocProvider(create: (_) => CalendarCubit()),
         BlocProvider(create: (_) => MotivationCubit()),
         BlocProvider(create: (_) => SettingsCubit()),

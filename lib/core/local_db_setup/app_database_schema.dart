@@ -13,8 +13,7 @@ final DatabaseConfig appDatabaseConfig = DatabaseConfig(
   tables: [
     TableSchema(
       name: TablesName.alarms,
-      createSql:
-          '''
+      createSql: '''
 CREATE TABLE IF NOT EXISTS ${TablesName.alarms} (
   id INTEGER PRIMARY KEY,
   title TEXT NOT NULL,
@@ -26,7 +25,6 @@ CREATE TABLE IF NOT EXISTS ${TablesName.alarms} (
   year INTEGER NOT NULL,
   month INTEGER NOT NULL,
   day INTEGER NOT NULL
-  sound TEXT,
 )
 ''',
     ),

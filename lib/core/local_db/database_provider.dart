@@ -1,3 +1,4 @@
+import 'package:goaliva/core/util/printer/print_helper.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -23,13 +24,20 @@ class DatabaseProvider {
   Future<Database> _open() async {
     try {
       final dbPath = join(await getDatabasesPath(), _config.name);
-      return await openDatabase(
+      PrintHelper(message: 'Database path: $dbPath');
+      final result = await openDatabase(
         dbPath,
         version: _config.version,
         onConfigure: _onConfigure,
         onCreate: _onCreate,
         onUpgrade: _onUpgrade,
       );
+      PrintHelper(
+        message: 'Database opened ----------------------------------',
+      );
+      PrintHelper(message: 'Database: $result');
+
+      return result;
     } catch (e) {
       throw LocalDbException('Failed to open database "${_config.name}"', e);
     }
@@ -37,6 +45,8 @@ class DatabaseProvider {
 
   Future<void> _onConfigure(Database db) async {
     await db.execute('PRAGMA foreign_keys = ON');
+    PrintHelper(message: 'Database configured ----------------------------------');
+    PrintHelper(message: 'Database: $db');
   }
 
   Future<void> _onCreate(Database db, int version) async {
@@ -48,6 +58,8 @@ class DatabaseProvider {
       }
     }
     await batch.commit(noResult: true);
+    PrintHelper(message: 'Database created ----------------------------------');
+    PrintHelper(message: 'Database: $db');
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
@@ -59,6 +71,8 @@ class DatabaseProvider {
         batch.execute(sql);
       }
       await batch.commit(noResult: true);
+      PrintHelper(message: 'Database upgraded to version $v ----------------------------------');
+      PrintHelper(message: 'Database: $db');
     }
   }
 }

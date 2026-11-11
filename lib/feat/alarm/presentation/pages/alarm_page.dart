@@ -77,7 +77,7 @@ class AlarmPage extends StatelessWidget {
       confirmLabelKey: 'common.remove',
     );
     if (!confirmed || !context.mounted) return;
-    context.read<AlarmCubit>().deleteAlarm(alarm.id);
+    context.read<AlarmCubit>().deleteAlarm(context, alarm.id);
   }
 
   @override
