@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -14,7 +15,12 @@ import 'package:lottie/lottie.dart';
 import 'package:toastification/toastification.dart';
 
 class AlarmNotificationScreen extends StatelessWidget {
-  const AlarmNotificationScreen({super.key});
+  const AlarmNotificationScreen({
+    super.key,
+    this.exitAppOnComplete = false,
+  });
+
+  final bool exitAppOnComplete;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +31,10 @@ class AlarmNotificationScreen extends StatelessWidget {
       listener: (context, state) {
         switch (state) {
           case AlarmNotificationScreenCompleted():
+            if (exitAppOnComplete) {
+              SystemNavigator.pop();
+              break;
+            }
             if (context.canPop()) {
               context.pop();
             }

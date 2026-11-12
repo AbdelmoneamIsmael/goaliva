@@ -25,8 +25,8 @@ class PageRoutes {
     }
   }
 
-  static void pushNamed(String name, {Object? arguments}) {
-    router.pushNamed(name, extra: arguments);
+  static Future<T?> pushNamed<T>(String name, {Object? arguments}) {
+    return router.pushNamed<T>(name, extra: arguments);
   }
 
   static void goNamed(String name, {Object? extra}) {

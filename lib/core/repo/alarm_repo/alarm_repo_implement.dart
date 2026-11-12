@@ -58,6 +58,8 @@ class AlarmRepoImplement extends AlarmRepo {
       vibrate: true,
       warningNotificationOnKill: Platform.isIOS,
       androidFullScreenIntent: true,
+      // Swiping the app away must not silence an alarm that is already ringing.
+      androidStopAlarmOnTermination: false,
       volumeSettings: VolumeSettings.fade(
         volume: 0.8,
         fadeDuration: const Duration(seconds: 5),

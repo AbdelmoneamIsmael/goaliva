@@ -4,7 +4,7 @@
 
 هذه وثيقة دراسة، لا ملخصاً قصيراً. مكتوبة من اليمين إلى اليسار. المصطلحات الإنجليزية تبقى كما هي داخل علامات الاقتباس البرمجية حتى تستطيع مطابقتها مع الكود، مثل `onCreate` و `Intent`.
 
-الملف الإنجليزي المختصر: [alarm_background.md](alarm_background.md).
+نفس الدراسة بالإنجليزية: [alarm_background_en.md](alarm_background_en.md). الملخص الإنجليزي القصير: [alarm_background.md](alarm_background.md).
 
 اقرأها بهذا الترتيب:
 

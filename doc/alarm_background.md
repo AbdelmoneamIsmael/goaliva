@@ -1,6 +1,6 @@
 # Alarm screen when the app is not running
 
-شرح الدراسة بالعربية (من اليمين لليسار، مع سجل الـ Activity وسبب كل قرار): [alarm_background_ar.md](alarm_background_ar.md).
+Full study guide, with the Activity lifecycle log, the decision log, and the scenarios: [alarm_background_en.md](alarm_background_en.md). Arabic: [alarm_background_ar.md](alarm_background_ar.md).
 
 Android can open the alarm screen over the lock screen after the process has been killed, and every way a ring ends updates the SQLite `alarms` row. This document covers that path. Creating and editing alarms is in [alarm.md](alarm.md).
 

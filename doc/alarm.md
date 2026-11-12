@@ -1,11 +1,13 @@
 # Alarm feature
 
-Alarms use two repositories so scheduling and persistence stay separate.
+Alarms use two repositories so scheduling and persistence stay separate. Background ringing, the lock-screen screen, and database updates that happen outside that screen are documented in [alarm_background.md](alarm_background.md).
 
-| Repo | Job |
+| Repo / service | Job |
 | --- | --- |
 | `AlarmRepo` | Talk to the device `alarm` package (`set` / `stop` / `init`) |
 | `AlarmLocalRepo` | Persist `AlarmModel` rows in SQLite via `LocalTable` |
+| `AlarmNotificationRepo` | Dismiss, snooze, and `completeRing` (plugin + SQLite) |
+| `AlarmSyncService` | Apply `completeRing` when a ring ends outside the screen |
 
 UI state lives in `AlarmCubit`. The list on screen always comes from the local database after load, add, update, toggle, or delete.
 
@@ -32,8 +34,11 @@ AlarmPage / AlarmFormSheet
 - Schedule helpers: `lib/core/models/alarm/alarm_schedule.dart`
 - Scheduler repo: `lib/core/repo/alarm_repo/alarm_repo.dart`
 - Local repo: `lib/core/repo/alarm_repo/alarm_local_repo.dart`
-- Cubit: `lib/feat/alarm/presentation/cubit/alarm_cubit.dart`
-- Page: `lib/feat/alarm/presentation/pages/alarm_page.dart`
+- Ring actions: `lib/core/repo/alarm_repo/alarm_notification_repo.dart`
+- Background sync: `lib/core/services/alarm_sync_service.dart`
+- Cubit: `lib/feature/alarm/presentation/cubit/alarm_cubit.dart`
+- Page: `lib/feature/alarm/presentation/pages/alarm_page.dart`
+- Ring screen: `lib/feature/features/alarm_notification_screen/presentation/pages/alarm_notification_screen.dart`
 - Table schema: `lib/core/local_db_setup/app_database_schema.dart` (`TablesName.alarms`)
 
 ## DI wiring
@@ -43,12 +48,29 @@ sl.registerLazySingleton<AlarmRepo>(() => AlarmRepoImplement());
 sl.registerLazySingleton<AlarmLocalRepo>(
   () => AlarmLocalRepoImplement(sl<LocalDataSource>()),
 );
-
-BlocProvider(
-  create: (_) => AlarmCubit(
+sl.registerLazySingleton<AlarmNotificationRepo>(
+  () => AlarmNotificationRepoImplement(
     alarmRepo: sl<AlarmRepo>(),
     alarmLocalRepo: sl<AlarmLocalRepo>(),
   ),
+);
+sl.registerLazySingleton<AlarmCubit>(
+  () => AlarmCubit(
+    alarmRepo: sl<AlarmRepo>(),
+    alarmLocalRepo: sl<AlarmLocalRepo>(),
+  ),
+);
+sl.registerLazySingleton<AlarmSyncService>(
+  () => AlarmSyncService(
+    notificationRepo: sl<AlarmNotificationRepo>(),
+    alarmLocalRepo: sl<AlarmLocalRepo>(),
+    alarmCubit: sl<AlarmCubit>(),
+  ),
+);
+
+BlocProvider.value(
+  value: sl<AlarmCubit>(),
+  child: const AlarmPage(),
 );
 ```
 

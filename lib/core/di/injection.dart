@@ -7,6 +7,8 @@ import 'package:goaliva/core/repo/alarm_repo/alarm_notification_repo.dart';
 import 'package:goaliva/core/repo/alarm_repo/alarm_notification_repo_implement.dart';
 import 'package:goaliva/core/repo/alarm_repo/alarm_repo.dart';
 import 'package:goaliva/core/repo/alarm_repo/alarm_repo_implement.dart';
+import 'package:goaliva/core/services/alarm_launch_service.dart';
+import 'package:goaliva/core/services/alarm_sync_service.dart';
 import 'package:goaliva/feature/alarm/presentation/cubit/alarm_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -34,6 +36,14 @@ Future<void> configureDependencies() async {
     () => AlarmCubit(
       alarmRepo: sl<AlarmRepo>(),
       alarmLocalRepo: sl<AlarmLocalRepo>(),
+    ),
+  );
+  sl.registerLazySingleton<AlarmLaunchService>(AlarmLaunchService.new);
+  sl.registerLazySingleton<AlarmSyncService>(
+    () => AlarmSyncService(
+      notificationRepo: sl<AlarmNotificationRepo>(),
+      alarmLocalRepo: sl<AlarmLocalRepo>(),
+      alarmCubit: sl<AlarmCubit>(),
     ),
   );
 }
