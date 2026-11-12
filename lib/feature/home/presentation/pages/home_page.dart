@@ -2,11 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:goaliva/core/routes/pages_keys.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/app_week_calendar.dart';
 import '../../../alarm/presentation/cubit/alarm_cubit.dart';
-import '../../../alarm/presentation/pages/alarm_page.dart';
 import '../cubit/home_cubit.dart';
 
 class HomePage extends StatelessWidget {
@@ -303,13 +304,7 @@ class _QuickGrid extends StatelessWidget {
   final bool isDark;
 
   Future<void> _openAlarms(BuildContext context) async {
-    final cubit = context.read<AlarmCubit>();
-    await Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) =>
-            BlocProvider.value(value: cubit, child: const AlarmPage()),
-      ),
-    );
+    await context.pushNamed(PagesKeys.alarm);
   }
 
   @override

@@ -6,7 +6,7 @@ import 'package:goaliva/core/cubit/app_cubit_cubit.dart';
 import 'package:toastification/toastification.dart';
 
 import 'core/di/injection.dart';
-import 'core/routing/app_router.dart';
+import 'core/routes/page_routes.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_cubit.dart';
 
@@ -45,7 +45,7 @@ class GoalivaApp extends StatelessWidget {
                         locale: locale,
                         supportedLocales: context.supportedLocales,
                         localizationsDelegates: context.localizationDelegates,
-                        routerConfig: PageAppRoute.appRouter,
+                        routerConfig: PageRoutes.router,
                       ),
                     );
                   },

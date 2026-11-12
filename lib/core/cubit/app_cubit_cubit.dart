@@ -4,8 +4,8 @@ import 'package:alarm/alarm.dart';
 import 'package:alarm/utils/alarm_set.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:goaliva/core/routing/app_router.dart';
-import 'package:goaliva/core/routing/page_keys.dart';
+import 'package:goaliva/core/routes/page_routes.dart';
+import 'package:goaliva/core/routes/pages_keys.dart';
 import 'package:goaliva/core/util/printer/print_helper.dart';
 
 part 'app_cubit_state.dart';
@@ -22,8 +22,8 @@ class AppCubitCubit extends Cubit<AppCubitState> {
       );
       final alarmId = event.alarms.firstOrNull?.id;
       if (alarmId != null) {
-        PageAppRoute.pushNamed(
-          PageKeys.alarmNotificationScreen,
+        PageRoutes.pushNamed(
+          PagesKeys.alarmNotification,
           arguments: alarmId,
         );
       }

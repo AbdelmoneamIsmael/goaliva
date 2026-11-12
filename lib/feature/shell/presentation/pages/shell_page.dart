@@ -2,62 +2,20 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:goaliva/core/di/injection.dart';
-import 'package:goaliva/core/repo/alarm_repo/alarm_local_repo.dart';
-import 'package:goaliva/core/repo/alarm_repo/alarm_repo.dart';
-
-import '../../../alarm/presentation/cubit/alarm_cubit.dart';
-import '../../../calendar/presentation/cubit/calendar_cubit.dart';
-import '../../../calendar/presentation/pages/calendar_page.dart';
-import '../../../home/presentation/cubit/home_cubit.dart';
-import '../../../home/presentation/pages/home_page.dart';
-import '../../../motivation/presentation/cubit/motivation_cubit.dart';
-import '../../../motivation/presentation/pages/motivation_page.dart';
-import '../../../settings/presentation/cubit/settings_cubit.dart';
-import '../../../settings/presentation/pages/settings_page.dart';
-import '../cubit/shell_cubit.dart';
-import '../widgets/app_bottom_nav_bar.dart';
+import 'package:goaliva/feature/shell/presentation/cubit/shell_cubit.dart';
+import 'package:goaliva/feature/shell/presentation/widgets/app_bottom_nav_bar.dart';
 
 class ShellPage extends StatelessWidget {
-  const ShellPage({super.key});
+  const ShellPage({super.key, required this.child});
 
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => ShellCubit()),
-        BlocProvider(create: (_) => HomeCubit()),
-        BlocProvider(
-          create: (_) => AlarmCubit(
-            alarmRepo: sl<AlarmRepo>(),
-            alarmLocalRepo: sl<AlarmLocalRepo>(),
-          ),
-        ),
-        BlocProvider(create: (_) => CalendarCubit()),
-        BlocProvider(create: (_) => MotivationCubit()),
-        BlocProvider(create: (_) => SettingsCubit()),
-      ],
-      child: const _ShellView(),
-    );
-  }
-}
-
-class _ShellView extends StatelessWidget {
-  const _ShellView();
-
-  static const _pages = [
-    HomePage(),
-    CalendarPage(),
-    MotivationPage(),
-    SettingsPage(),
-  ];
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ShellCubit, ShellState>(
       builder: (context, state) {
         return Scaffold(
-          body: IndexedStack(index: state.currentIndex, children: _pages),
+          body: child,
           bottomNavigationBar: Padding(
             padding: EdgeInsetsDirectional.only(
               start: 20.w,
@@ -68,7 +26,8 @@ class _ShellView extends StatelessWidget {
               top: false,
               child: AppBottomNavBar(
                 currentIndex: state.currentIndex,
-                onTap: (index) => context.read<ShellCubit>().selectTab(index),
+                onTap: (index) =>
+                    context.read<ShellCubit>().selectTab(context, index),
                 items: [
                   AppBottomNavItem(
                     icon: Icons.home_rounded,
