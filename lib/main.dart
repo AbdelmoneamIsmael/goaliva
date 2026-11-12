@@ -22,6 +22,9 @@ Future<void> main() async {
   WidgetsBinding.instance.addPostFrameCallback((_) async {
     await initializeApp();
     await sl<AlarmRepo>().initialize();
+
+    
+
   });
 
   runApp(

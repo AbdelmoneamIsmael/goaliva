@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:goaliva/core/theme/app_theme.dart';
 import 'package:goaliva/core/theme/theme_cubit.dart';
-import 'package:goaliva/feat/shell/presentation/pages/shell_page.dart';
+import 'package:goaliva/feature/shell/presentation/pages/shell_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
