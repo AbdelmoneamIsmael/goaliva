@@ -74,7 +74,12 @@
     "toast_updated": "Alarm updated",
     "toast_added": "Alarm added",
     "remaining": "In {time}",
-    "remaining_passed": "Passed"
+    "remaining_passed": "Passed",
+    "ring_headline": "Take a breath",
+    "ring_fallback_title": "Alarm",
+    "ring_fallback_body": "Time to wake up!",
+    "snooze_5": "Snooze 5 min",
+    "dismiss": "Dismiss"
   },
   "calendar": {
     "title": "Calendar",

@@ -4,6 +4,8 @@ import 'package:goaliva/core/models/alarm/alarm.dart';
 abstract class AlarmLocalRepo {
   Future<List<AlarmModel>> getAll();
 
+  Future<AlarmModel?> getById(int id);
+
   Future<void> save(AlarmModel alarm);
 
   Future<void> delete(int id);

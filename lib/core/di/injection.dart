@@ -3,6 +3,8 @@ import 'package:goaliva/core/local_db/local_db.dart';
 import 'package:goaliva/core/local_db_setup/app_database_schema.dart';
 import 'package:goaliva/core/repo/alarm_repo/alarm_local_repo.dart';
 import 'package:goaliva/core/repo/alarm_repo/alarm_local_repo_implement.dart';
+import 'package:goaliva/core/repo/alarm_repo/alarm_notification_repo.dart';
+import 'package:goaliva/core/repo/alarm_repo/alarm_notification_repo_implement.dart';
 import 'package:goaliva/core/repo/alarm_repo/alarm_repo.dart';
 import 'package:goaliva/core/repo/alarm_repo/alarm_repo_implement.dart';
 import 'package:goaliva/feature/alarm/presentation/cubit/alarm_cubit.dart';
@@ -21,6 +23,12 @@ Future<void> configureDependencies() async {
   sl.registerLazySingleton<AlarmRepo>(() => AlarmRepoImplement());
   sl.registerLazySingleton<AlarmLocalRepo>(
     () => AlarmLocalRepoImplement(sl<LocalDataSource>()),
+  );
+  sl.registerLazySingleton<AlarmNotificationRepo>(
+    () => AlarmNotificationRepoImplement(
+      alarmRepo: sl<AlarmRepo>(),
+      alarmLocalRepo: sl<AlarmLocalRepo>(),
+    ),
   );
   sl.registerLazySingleton<AlarmCubit>(
     () => AlarmCubit(

@@ -13,8 +13,8 @@ class AlarmRepoImplement extends AlarmRepo {
 
   @override
   Future<void> setAlarm(AlarmModel alarm) async {
-    final alarmSettings = AlarmSettings(
-      id: alarm.id,
+    final alarmSettings = _settings(
+      alarm: alarm,
       dateTime: DateTime(
         alarm.year,
         alarm.month,
@@ -22,6 +22,37 @@ class AlarmRepoImplement extends AlarmRepo {
         alarm.hour,
         alarm.minute,
       ),
+    );
+    await Alarm.set(alarmSettings: alarmSettings);
+    print(
+      '--------------------------------Alarm set successfully--------------------------------',
+    );
+  }
+
+  @override
+  Future<void> snoozeAlarm(AlarmModel alarm, DateTime when) async {
+    final alarmSettings = _settings(alarm: alarm, dateTime: when);
+    await Alarm.set(alarmSettings: alarmSettings);
+    print(
+      '--------------------------------Alarm snoozed successfully--------------------------------',
+    );
+  }
+
+  @override
+  Future<void> stopAlarm(int id) async {
+    await Alarm.stop(id);
+    print(
+      '--------------------------------Alarm stopped successfully--------------------------------',
+    );
+  }
+
+  AlarmSettings _settings({
+    required AlarmModel alarm,
+    required DateTime dateTime,
+  }) {
+    return AlarmSettings(
+      id: alarm.id,
+      dateTime: dateTime,
       assetAudioPath: 'assets/sounds/gentle_alarm.mp3',
       loopAudio: true,
       vibrate: true,
@@ -35,23 +66,10 @@ class AlarmRepoImplement extends AlarmRepo {
       notificationSettings: NotificationSettings(
         title: alarm.title,
         body: alarm.description,
-        stopButton: "Stop the alarm",
+        stopButton: 'Stop the alarm',
         icon: 'notification_icon',
         iconColor: Colors.red,
       ),
     );
-    await Alarm.set(alarmSettings: alarmSettings);
-    print(
-      '--------------------------------Alarm set successfully--------------------------------',
-    );
   }
-
-  @override
-  Future<void> stopAlarm(int id) async {
-    await Alarm.stop(id);
-    print(
-      '--------------------------------Alarm stopped successfully--------------------------------',
-    );
-  }
-
 }

@@ -6,8 +6,9 @@ abstract class AlarmRepo {
   // set alarm
   Future<void> setAlarm(AlarmModel alarm);
 
+  /// Schedule a one-off ring at [when] using the alarm's title and description.
+  Future<void> snoozeAlarm(AlarmModel alarm, DateTime when);
+
   // stop alarm
   Future<void> stopAlarm(int id);
-
-
 }

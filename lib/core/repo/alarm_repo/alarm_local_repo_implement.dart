@@ -20,6 +20,11 @@ class AlarmLocalRepoImplement implements AlarmLocalRepo {
   }
 
   @override
+  Future<AlarmModel?> getById(int id) {
+    return _table.getById(id);
+  }
+
+  @override
   Future<void> save(AlarmModel alarm) async {
     await _table.save(alarm);
   }

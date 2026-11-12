@@ -43,6 +43,7 @@ dependencies:
   alarm: ^5.15.0
   # for toast notifications
   toastification: ^3.2.2
+  lottie: ^3.8.2
 
 dev_dependencies:
   flutter_test:
@@ -62,6 +63,7 @@ flutter:
     - assets/sounds/
     - assets/images/
     - assets/icons/
+    - assets/lottie/
 
   fonts:
     - family: DMSans
